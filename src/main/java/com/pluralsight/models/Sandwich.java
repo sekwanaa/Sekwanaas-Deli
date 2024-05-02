@@ -1,13 +1,17 @@
 package com.pluralsight.models;
 
-import java.util.List;
+import java.util.Set;
 
 public class Sandwich {
     private String size;
     private String type;
-    private List<String> premiumToppings;
-    private List<String> regularToppings;
-    private List<String> sauces;
+    private Set<String> premiumToppings;
+    private boolean extraMeat;
+    private Set<String> regularToppings;
+    private String cheese;
+    private boolean extraCheese;
+    private Set<String> sauces;
+    private boolean toasted;
 
     /*
     *
@@ -22,8 +26,8 @@ public class Sandwich {
     public void setSize(int choice) {
         this.size = switch (choice) {
             case 1 -> "4\"";
-            case 2 -> "6\"";
-            case 3 -> "8\"";
+            case 2 -> "8\"";
+            case 3 -> "12\"";
             default -> "";
         };
     }
@@ -42,27 +46,107 @@ public class Sandwich {
         };
     }
 
-    public List<String> getPremiumToppings() {
+    public Set<String> getPremiumToppings() {
         return premiumToppings;
     }
 
-    public void setPremiumToppings(List<String> premiumToppings) {
+    public void setPremiumToppings(Set<String> premiumToppings) {
         this.premiumToppings = premiumToppings;
     }
 
-    public List<String> getRegularToppings() {
+    public Set<String> getRegularToppings() {
         return regularToppings;
     }
 
-    public void setRegularToppings(List<String> regularToppings) {
+    public void setRegularToppings(Set<String> regularToppings) {
         this.regularToppings = regularToppings;
     }
 
-    public List<String> getSauces() {
+    public Set<String> getSauces() {
         return sauces;
     }
 
-    public void setSauces(List<String> sauces) {
+    public void setSauces(Set<String> sauces) {
         this.sauces = sauces;
+    }
+
+    public boolean isExtraMeat() {
+        return extraMeat;
+    }
+
+    public void setExtraMeat(boolean extraMeat) {
+        this.extraMeat = extraMeat;
+    }
+
+    public Set<String> getCheese() {
+        return cheese;
+    }
+
+    public void setCheese(Set<String> cheese) {
+        this.cheese = cheese;
+    }
+
+    public boolean hasExtraCheese() {
+        return extraCheese;
+    }
+
+    public void setExtraCheese(boolean extraCheese) {
+        this.extraCheese = extraCheese;
+    }
+
+    public boolean isToasted() {
+        return toasted;
+    }
+
+    public void setToasted(boolean toasted) {
+        this.toasted = toasted;
+    }
+
+    public double getPrice() {
+        double finalPrice = 0;
+        double premiumToppingCharge = 0;
+        double extraMeatCharge = 0;
+        double cheeseCharge = 0;
+        double extraCheeseCharge = 0;
+        switch (size) {
+            case "4\"" -> {
+                finalPrice += 5.50;
+                premiumToppingCharge = 1.00;
+                extraMeatCharge = .50;
+                cheeseCharge = .75;
+                extraCheeseCharge = .30;
+            }
+            case "8\"" -> {
+                finalPrice += 7.00;
+                premiumToppingCharge = 2.00;
+                extraMeatCharge = 1.00;
+                cheeseCharge = 1.50;
+                extraCheeseCharge = .60;
+            }
+            case "12\"" -> {
+                finalPrice += 8.50;
+                premiumToppingCharge = 3.00;
+                extraMeatCharge = 1.50;
+                cheeseCharge = 2.25;
+                extraCheeseCharge = .90;
+            }
+        }
+        for (String ignored : premiumToppings) {
+            finalPrice += premiumToppingCharge;
+        }
+
+        if (!cheese.isEmpty()) {
+            finalPrice += cheeseCharge;
+        }
+
+        if (extraMeat) {
+            finalPrice += extraMeatCharge;
+        }
+
+        if (extraCheese) {
+            finalPrice += extraCheeseCharge;
+        }
+
+        return finalPrice;
     }
 }

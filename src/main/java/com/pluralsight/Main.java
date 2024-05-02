@@ -13,11 +13,12 @@ public class Main {
             while (true) {
                 System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to our DELI-cious application");
                 System.out.println("What can we do for you today?");
-                System.out.println("""
+                System.out.print("""
                 
                 [1] Create a new order
                 [0] Exit
-                """);
+                
+                Enter choice:\s""");
                 System.out.print("Enter choice: ");
                 int userChoice = scanner.nextInt();
 

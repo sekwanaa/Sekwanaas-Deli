@@ -12,9 +12,9 @@ public class Order {
     private List<Drinks> drinks;
     private List<Chips> chips;
 
-    public static void homeScreen(Scanner scanner) {
+    public void homeScreen(Scanner scanner) {
         while (true) {
-            System.out.println("""
+            System.out.print("""
                 What would you like to add to your order?
                 
                 [1] Sandwich
@@ -24,7 +24,7 @@ public class Order {
                 [5] Sauces
                 [0] Previous screen
                 
-                """);
+                Enter choice:\s""");
             int userChoice = scanner.nextInt();
 
             switch (userChoice) {
@@ -54,5 +54,16 @@ public class Order {
     }
 
 
+    @Override
+    public String toString() {
+        System.out.print("""
+                            Your Order
+                ================================
+                """);
+        sandwich.forEach(sandwich -> {
 
+            System.out.printf("Sandwich             %.2f", sandwich.getPrice());
+            // continue printing info about each sandwich, and then each drink, etc.
+        });
+    }
 }
