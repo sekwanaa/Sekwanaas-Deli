@@ -12,7 +12,7 @@ public class Order {
     private List<Drinks> drinks;
     private List<Chips> chips;
 
-    public void homeScreen(Scanner scanner) {
+    public static void homeScreen(Scanner scanner) {
         while (true) {
             System.out.println("""
                 What would you like to add to your order?
@@ -23,12 +23,15 @@ public class Order {
                 [4] Sides
                 [5] Sauces
                 [0] Previous screen
+                
                 """);
             int userChoice = scanner.nextInt();
 
             switch (userChoice) {
                 case 1:
                     System.out.println("Sandwiches");
+                    CreateSandwich sandwichInterface = new CreateSandwich();
+                    sandwichInterface.homeScreen(scanner);
                     break;
                 case 2:
                     System.out.println("Drinks");
