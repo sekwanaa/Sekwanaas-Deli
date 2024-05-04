@@ -62,6 +62,10 @@ public class CreateSandwich {
                         chooseToppings(scanner, userSandwich, regularToppings, "regular");
                         break;
                     case 5:
+                        // choose sauces
+                        break;
+                    default:
+                        System.out.println("This is not a valid choice, please try again.");
                         break;
                 }
             } else {
@@ -76,6 +80,8 @@ public class CreateSandwich {
                         }
                     }
                     case "X", "x" -> isRunning = false;
+                    default -> System.out.println("This is not a valid choice, please try again.");
+
                 }
             }
 

@@ -6,12 +6,12 @@ public class Sandwich {
     private String size;
     private String type;
     private Set<String> premiumToppings;
-    private boolean extraMeat;
+    private boolean extraMeat = false;
     private Set<String> regularToppings;
     private String cheese;
-    private boolean extraCheese;
+    private boolean extraCheese = false;
     private Set<String> sauces;
-    private boolean toasted;
+    private boolean toasted = false;
 
     /*
     *
@@ -135,17 +135,17 @@ public class Sandwich {
             finalPrice += premiumToppingCharge;
         }
 
-//        if (!cheese.isEmpty()) {
-//            finalPrice += cheeseCharge;
-//        }
+        if (cheese != null && !cheese.isEmpty()) {
+            finalPrice += cheeseCharge;
+        }
 
-//        if (extraMeat) {
-//            finalPrice += extraMeatCharge;
-//        }
+        if (extraMeat) {
+            finalPrice += extraMeatCharge;
+        }
 
-//        if (extraCheese) {
-//            finalPrice += extraCheeseCharge;
-//        }
+        if (extraCheese) {
+            finalPrice += extraCheeseCharge;
+        }
 
         return finalPrice;
     }
