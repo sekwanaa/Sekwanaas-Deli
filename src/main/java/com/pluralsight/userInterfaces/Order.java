@@ -4,16 +4,21 @@ import com.pluralsight.models.Chips;
 import com.pluralsight.models.Drinks;
 import com.pluralsight.models.Sandwich;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Order {
-    private List<Sandwich> sandwich;
-    private List<Drinks> drinks;
-    private List<Chips> chips;
+    public static List<Sandwich> sandwich = new ArrayList<>();
+    public static List<Drinks> drinks = new ArrayList<>();
+    public static List<Chips> chips = new ArrayList<>();;
+
 
     public void homeScreen(Scanner scanner) {
         while (true) {
+            if (sandwich != null) {
+                System.out.println("Your current order:\n\n" + this);
+            }
             System.out.print("""
                 What would you like to add to your order?
                 
@@ -56,14 +61,29 @@ public class Order {
 
     @Override
     public String toString() {
-        System.out.print("""
-                            Your Order
-                ================================
+        System.out.println("here");
+        StringBuilder output = new StringBuilder();
+        output.append("""
+                               Your Order
+                ======================================
                 """);
         sandwich.forEach(sandwich -> {
 
-            System.out.printf("Sandwich             %.2f", sandwich.getPrice());
+            output.append(String.format("\nSandwich [%s %s]           %.2f", sandwich.getSize(), sandwich.getType(), sandwich.getPrice()));
+            output.append("\nPremium Toppings:\n");
+            if (sandwich.getPremiumToppings() != null) {
+                sandwich.getPremiumToppings().forEach(premiumTopping -> output.append(String.format("   %s\n", premiumTopping)));
+            } else {
+                output.append("N/A\n");
+            }
+            output.append("\nRegular Toppings:\n");
+            if (sandwich.getRegularToppings() != null) {
+                sandwich.getRegularToppings().forEach(regularTopping -> output.append(String.format("   %s\n", regularTopping)));
+            } else {
+                output.append("N/A\n");
+            }
             // continue printing info about each sandwich, and then each drink, etc.
         });
+        return output.toString();
     }
 }

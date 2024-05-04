@@ -78,11 +78,11 @@ public class Sandwich {
         this.extraMeat = extraMeat;
     }
 
-    public Set<String> getCheese() {
+    public String getCheese() {
         return cheese;
     }
 
-    public void setCheese(Set<String> cheese) {
+    public void setCheese(String cheese) {
         this.cheese = cheese;
     }
 
@@ -135,17 +135,17 @@ public class Sandwich {
             finalPrice += premiumToppingCharge;
         }
 
-        if (!cheese.isEmpty()) {
-            finalPrice += cheeseCharge;
-        }
+//        if (!cheese.isEmpty()) {
+//            finalPrice += cheeseCharge;
+//        }
 
-        if (extraMeat) {
-            finalPrice += extraMeatCharge;
-        }
+//        if (extraMeat) {
+//            finalPrice += extraMeatCharge;
+//        }
 
-        if (extraCheese) {
-            finalPrice += extraCheeseCharge;
-        }
+//        if (extraCheese) {
+//            finalPrice += extraCheeseCharge;
+//        }
 
         return finalPrice;
     }
