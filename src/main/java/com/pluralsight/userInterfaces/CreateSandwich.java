@@ -44,7 +44,6 @@ public class CreateSandwich {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println(userSandwich.getPremiumToppings());
             System.out.print("""
                     
                     -------Customize your sandwich-------
@@ -264,8 +263,6 @@ public class CreateSandwich {
 
 
     private boolean checkIfRequiredItemsAreChosen(Sandwich userSandwich) {
-        System.out.println(userSandwich.getSize());
-        System.out.println(userSandwich.getType());
         return userSandwich.getSize() != null && userSandwich.getType() != null;
     }
 }
