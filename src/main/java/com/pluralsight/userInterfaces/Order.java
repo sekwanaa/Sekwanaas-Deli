@@ -95,22 +95,38 @@ public class Order {
             String isToasted = sandwich.isToasted() ? "yes" : "no";
             String hasExtraCheese = sandwich.hasExtraCheese() ? "yes" : "no";
             String isExtraMeat = sandwich.isExtraMeat() ? "yes" : "no";
+            String cheese = sandwich.getCheese() != null ? sandwich.getCheese() : "N/A";
 
-            output.append(String.format("\nSandwich [%s %s]                          %.2f", sandwich.getSize(), sandwich.getType(), sandwich.getPrice()));
-            output.append(String.format("\nToasted: %s  Extra Cheese: %s  Extra Meat: %s\n", isToasted, hasExtraCheese, isExtraMeat));
+            output.append(String.format("""
+                    
+                    -------------------------------------------------
+                     Sandwich [%s %s]                       %.2f
+                    +===============================================+
+                     Cheese: %s
+                     Toasted: %s  Extra Cheese: %s  Extra Meat: %s
+                    """, sandwich.getSize(), sandwich.getType(), sandwich.getPrice(), cheese, isToasted, hasExtraCheese, isExtraMeat));
 
-            output.append("\nPremium Toppings:\n");
+            output.append("\n Premium Toppings:\n");
             if (sandwich.getPremiumToppings() != null) {
-                sandwich.getPremiumToppings().forEach(premiumTopping -> output.append(String.format("   %s\n", premiumTopping)));
+                sandwich.getPremiumToppings().forEach(premiumTopping -> output.append(String.format("\t%s\n", premiumTopping)));
             } else {
-                output.append("N/A\n");
+                output.append("\tN/A\n");
             }
-            output.append("\nRegular Toppings:\n");
+
+            output.append("\n Regular Toppings:\n");
             if (sandwich.getRegularToppings() != null) {
-                sandwich.getRegularToppings().forEach(regularTopping -> output.append(String.format("   %s\n", regularTopping)));
+                sandwich.getRegularToppings().forEach(regularTopping -> output.append(String.format("\t%s\n", regularTopping)));
             } else {
-                output.append("N/A\n");
+                output.append("\tN/A\n");
             }
+
+            output.append("\n Sauces:\n");
+            if (sandwich.getSauces() != null) {
+                sandwich.getSauces().forEach(sauce -> output.append(String.format("\t%s\n", sauce)));
+            } else {
+                output.append("\tN/A\n");
+            }
+            output.append("-------------------------------------------------");
             // continue printing info about each sandwich, and then each drink, etc.
         });
         return output.toString();

@@ -24,6 +24,20 @@ public class CreateSandwich {
             8, "Guacamole",
             9, "Mushrooms"
     ));
+    Map<Integer, String> cheeses = new TreeMap<>(Map.of(
+            1, "American",
+            2, "Provolone",
+            3, "Cheddar",
+            4, "Swiss"
+    ));
+    Map<Integer, String> sauces = new TreeMap<>(Map.of(
+            1, "Mayo",
+            2, "Mustard",
+            3, "Ketchup",
+            4, "Ranch",
+            5, "Thousand Islands",
+            6, "Vinaigrette"
+    ));
 
 
     public void homeScreen(Scanner scanner) {
@@ -39,7 +53,8 @@ public class CreateSandwich {
                     [2] Choose bread type
                     [3] Choose premium toppings
                     [4] Choose regular toppings
-                    [5] Choose sauces
+                    [5] Choose cheese
+                    [6] Choose sauces
                     
                     [f] Finalize sandwich
                     [x] Cancel sandwich
@@ -62,7 +77,10 @@ public class CreateSandwich {
                         chooseToppings(scanner, userSandwich, regularToppings, "regular");
                         break;
                     case 5:
-                        // choose sauces
+                        chooseCheese(scanner, userSandwich, cheeses);
+                        break;
+                    case 6:
+                        chooseSauces(scanner, userSandwich, sauces);
                         break;
                     default:
                         System.out.println("This is not a valid choice, please try again.");
@@ -72,7 +90,29 @@ public class CreateSandwich {
                 String userChoice = scanner.nextLine();
                 switch (userChoice) {
                     case "F", "f" -> {
+                        // first ask if they want toasted, extra cheese, or extra meat.
                         if (checkIfRequiredItemsAreChosen(userSandwich)) {
+                            System.out.print("Would you like your sandwich toasted? (Y/N): ");
+                            String toasted = scanner.nextLine();
+                            if (toasted.equalsIgnoreCase("y")) {
+                                userSandwich.setToasted(true);
+                            }
+
+                            if (userSandwich.getCheese() != null) {
+                                System.out.print("Would you like to make your sandwich extra cheesy? (Y/N): ");
+                                String extraCheese = scanner.nextLine();
+                                if (extraCheese.equalsIgnoreCase("y")) {
+                                    userSandwich.setExtraCheese(true);
+                                }
+                            }
+
+                            if (userSandwich.getPremiumToppings() != null) {
+                                System.out.print("Would you like you sandwich to be extra meaty? (Y/N): ");
+                                String extraMeat = scanner.nextLine();
+                                if (extraMeat.equalsIgnoreCase("y")) {
+                                    userSandwich.setExtraMeat(true);
+                                }
+                            }
                             Order.sandwich.add(userSandwich);
                             isRunning = false;
                         } else {
@@ -115,8 +155,8 @@ public class CreateSandwich {
 
     private void chooseToppings(Scanner scanner, Sandwich userSandwich, Map<Integer, String> toppings, String type) {
         Set<String> chosenToppings = new HashSet<>();
-        boolean isChoosing = true;
-        while (isChoosing) {
+        boolean isChoosingToppings = true;
+        while (isChoosingToppings) {
             System.out.println("Please choose which toppings to add:");
             toppings.forEach((number, topping) -> {
                 System.out.printf("[%d] %s\n", number, topping);
@@ -137,7 +177,6 @@ public class CreateSandwich {
                 } else {
                     chosenToppings.add(toppings.get(userChoice));
                 }
-                System.out.println(chosenToppings);
             } else {
                 scanner.nextLine();
                 String userDone = scanner.nextLine();
@@ -156,12 +195,68 @@ public class CreateSandwich {
                             } else if (type.equals("regular")) {
                                 userSandwich.setRegularToppings(chosenToppings);
                             }
-                            isChoosing = false;
+                            isChoosingToppings = false;
                         }
                         case "n", "N" -> System.out.println("Okay, let's try again...");
                     }
                 } else {
-                    System.out.println("This is not an integer... Please enter the correct data type.");
+                    System.out.println("This is not a valid choice... Please enter a valid choice.");
+                }
+            }
+        }
+    }
+
+
+    private void chooseCheese(Scanner scanner, Sandwich userSandwich, Map<Integer, String> cheeses) {
+        cheeses.forEach((number, cheese) -> System.out.printf("[%d] %s\n", number, cheese));
+        System.out.print("Enter choice: ");
+        int cheese = scanner.nextInt();
+        userSandwich.setCheese(cheeses.get(cheese));
+    }
+
+
+    private void chooseSauces(Scanner scanner, Sandwich userSandwich, Map<Integer, String> sauces) {
+        Set<String> chosenSauces = new HashSet<>();
+        boolean isChoosingSauces = true;
+        while (isChoosingSauces) {
+            System.out.println("Please choose which toppings to add:");
+            sauces.forEach((number, sauce) -> {
+                System.out.printf("[%d] %s\n", number, sauce);
+            });
+            System.out.print("""
+                    
+                    [D] Done
+                    
+                    Enter choice:\s""");
+            int userChoice;
+
+            if (scanner.hasNextInt()) {
+                userChoice = scanner.nextInt();
+                if (userChoice < 0 || userChoice > sauces.size()) {
+                    System.out.println("Please provide a valid choice...");
+                } else if (userChoice == 0) {
+                    break;
+                } else {
+                    chosenSauces.add(sauces.get(userChoice));
+                }
+            } else {
+                scanner.nextLine();
+                String userDone = scanner.nextLine();
+                if (userDone.equalsIgnoreCase("d")) {
+                    System.out.println("\nSummary of sauces:");
+
+                    chosenSauces.forEach(System.out::println);
+                    System.out.print("Is this correct? (Y/N): ");
+                    String accepted = scanner.nextLine();
+                    switch (accepted) {
+                        case "y", "Y" -> {
+                            userSandwich.setSauces(chosenSauces);
+                            isChoosingSauces = false;
+                        }
+                        case "n", "N" -> System.out.println("Okay, let's try again...");
+                    }
+                } else {
+                    System.out.println("This is not a valid choice... Please enter a valid choice.");
                 }
             }
         }
