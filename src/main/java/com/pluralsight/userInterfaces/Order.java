@@ -1,5 +1,6 @@
 package com.pluralsight.userInterfaces;
 
+import com.pluralsight.models.Receipt;
 import com.pluralsight.models.Sandwich;
 
 import java.util.*;
@@ -37,6 +38,7 @@ public class Order {
 
             if (scanner.hasNextInt()) {
                 int userChoice = scanner.nextInt();
+                scanner.nextLine();
                 switch (userChoice) {
                     case 1:
                         // go to createSandwich interface since it's complicated
@@ -57,6 +59,7 @@ public class Order {
                                 """);
                             if (scanner.hasNextInt()) {
                                 int drinkChoice = scanner.nextInt();
+                                scanner.nextLine();
                                 switch (drinkChoice) {
                                     case 1 -> addDrink("Small");
                                     case 2 -> addDrink("Medium");
@@ -75,7 +78,6 @@ public class Order {
                     case 3:
                         // let users add chips if they want
                         System.out.print("Would you like to add some chips? (Y/N): ");
-                        scanner.nextLine();
                         String chipsOrNot = scanner.nextLine();
                         if (chipsOrNot.equalsIgnoreCase("y")) {
                             addChips();
@@ -91,6 +93,7 @@ public class Order {
 
                         if (scanner.hasNextInt()) {
                             int userSidesChoice = scanner.nextInt();
+                            scanner.nextLine();
                             sidesChoice.add(sides.get(userSidesChoice));
                         } else {
                             String cancelSidesChoice = scanner.nextLine();
@@ -109,9 +112,22 @@ public class Order {
                 switch (userChoice) {
                     case "F", "f" -> {
                         // add items to receipt and finalize the order
-                        System.out.println("Your current order:\n\n" + this);
+                        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + this);
+                        System.out.print("\n\n\n\nIs the order correct? (Y/N): ");
+                        String orderFinished = scanner.nextLine();
 
-                        isMakingOrder = false;
+                        switch (orderFinished) {
+                            case "Y", "y":
+                                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + this);
+                                Receipt receipt = new Receipt(this.toString());
+                                receipt.createReceipt();
+                                System.out.println("Receipt Created...");
+                                isMakingOrder = false;
+                                break;
+                            case "N", "n":
+                                break;
+                        }
+
                     }
                     case "X", "x" -> {
                         // clear all static lists so that when they create a new order there's nothing in it.
@@ -127,8 +143,8 @@ public class Order {
     }
 
     private void addDrink(String size) {
-        drinks.putIfAbsent(size, 1);
         drinks.computeIfPresent(size, (drink, count) -> count + 1);
+        drinks.putIfAbsent(size, 1);
     }
 
 
@@ -220,8 +236,9 @@ public class Order {
             output.append(String.format("""
                     
                     -----------------------------------------++--------
-                     %d Chips                                 || %.2f
+                     Chips                                   ||
                     +========================================++=======+
+                     %d Regular                                 %.2f
                     """, chips, chipsCost));
         }
 
@@ -245,7 +262,7 @@ public class Order {
                  \sTax (7%%)                                || %.2f
                  \sTotal                                   || %.2f
                  """, subtotal, tax, total));
-        output.append("\n-----------------------------------------++--------\n");
+        output.append("-----------------------------------------++--------\n");
 
 
         // continue printing info about each sandwich, and then each drink, etc.

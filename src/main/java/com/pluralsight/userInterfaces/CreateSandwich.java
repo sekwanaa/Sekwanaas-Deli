@@ -223,7 +223,7 @@ public class CreateSandwich {
             if (userChoice < 0 || userChoice > cheeses.size()) {
                 System.out.println("Please provide a valid choice...");
             } else {
-                userSandwich.setCheese(sauces.get(userChoice));
+                userSandwich.setCheese(cheeses.get(userChoice));
             }
         } else {
             scanner.nextLine();
