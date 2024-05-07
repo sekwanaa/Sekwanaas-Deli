@@ -20,15 +20,23 @@ public class Main {
                 
                 Enter choice:\s""");
                 System.out.print("Enter choice: ");
-                int userChoice = scanner.nextInt();
 
-                switch (userChoice) {
-                    case 1 -> {
-                        Order userOrder = new Order();
-                        userOrder.homeScreen(scanner);
+                if (scanner.hasNextInt()) {
+                    int userChoice = scanner.nextInt();
+
+                    switch (userChoice) {
+                        case 1 -> {
+                            Order userOrder = new Order();
+                            userOrder.homeScreen(scanner);
+                        }
+                        case 0 -> System.exit(0);
+                        default -> System.out.println("That's not a valid choice, please try again...");
                     }
-                    case 0 -> System.exit(0);
-                    default -> System.out.println("That's not a valid choice, please try again...");
+                } else {
+                    scanner.nextLine();
+                    System.out.println("\nThat is not a valid input type, please select 1 or 0.");
+                    System.out.println("Press ENTER if you understand...");
+                    scanner.nextLine();
                 }
             }
         } catch (InputMismatchException e) {

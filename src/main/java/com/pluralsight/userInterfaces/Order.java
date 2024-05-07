@@ -23,6 +23,7 @@ public class Order {
     public void homeScreen(Scanner scanner) {
         boolean isMakingOrder = true;
         while (isMakingOrder) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             System.out.print("""
                 What would you like to add to your order?
                 
@@ -47,8 +48,8 @@ public class Order {
                         break;
                     case 2:
                         // let users choose drink size
-                            System.out.println("""
-                                What size drink would you like?
+                            System.out.print("""
+                                What size fountain drink would you like?
                                 
                                 [1] Small
                                 [2] Medium
@@ -56,7 +57,7 @@ public class Order {
                                 
                                 [x] Cancel drink selection
                                 
-                                """);
+                                Enter choice:\s""");
                             if (scanner.hasNextInt()) {
                                 int drinkChoice = scanner.nextInt();
                                 scanner.nextLine();

@@ -161,6 +161,6 @@ public class Sandwich {
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (size == null ? "Required" : size), (type == null ? "Required" : type)) +
                 "Meats: " + (premiumToppings != null ? premiumToppings.toString() : "N/A") + "\n" +
                 "Regular toppings: " + (regularToppings != null ? regularToppings.toString() : "N/A") + "\n" +
-                "Cheese: " + (cheese != null ? cheese : "N/A") + "Sauces: " + (sauces != null ? sauces : "N/A") + "\n\n" + String.format("Price: %.2f\n", getPrice());
+                "Cheese: " + (cheese != null ? cheese : "N/A") + "\n" + "Sauces: " + (sauces != null ? sauces : "N/A") + "\n\n" + String.format("Price: %.2f\n", getPrice());
     }
 }

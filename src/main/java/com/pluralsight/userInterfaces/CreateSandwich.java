@@ -44,6 +44,7 @@ public class CreateSandwich {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             System.out.printf("""
                     %s
                     -------Customize your sandwich-------
@@ -51,7 +52,9 @@ public class CreateSandwich {
                     [1] Choose bread size
                     [2] Choose bread type
                     [3] Choose meats (extra charge)
+                    [4] Choose regular toppings
                     [5] Choose cheese (only 1 cheese allowed)
+                    [6] Choose sauces
                     
                     [f] Finalize sandwich
                     [x] Cancel sandwich
