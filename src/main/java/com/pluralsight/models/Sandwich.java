@@ -108,27 +108,29 @@ public class Sandwich {
         double extraMeatCharge = 0;
         double cheeseCharge = 0;
         double extraCheeseCharge = 0;
-        switch (size) {
-            case "4\"" -> {
-                finalPrice += 5.50;
-                premiumToppingCharge = 1.00;
-                extraMeatCharge = .50;
-                cheeseCharge = .75;
-                extraCheeseCharge = .30;
-            }
-            case "8\"" -> {
-                finalPrice += 7.00;
-                premiumToppingCharge = 2.00;
-                extraMeatCharge = 1.00;
-                cheeseCharge = 1.50;
-                extraCheeseCharge = .60;
-            }
-            case "12\"" -> {
-                finalPrice += 8.50;
-                premiumToppingCharge = 3.00;
-                extraMeatCharge = 1.50;
-                cheeseCharge = 2.25;
-                extraCheeseCharge = .90;
+        if (size != null) {
+            switch (size) {
+                case "4\"" -> {
+                    finalPrice += 5.50;
+                    premiumToppingCharge = 1.00;
+                    extraMeatCharge = .50;
+                    cheeseCharge = .75;
+                    extraCheeseCharge = .30;
+                }
+                case "8\"" -> {
+                    finalPrice += 7.00;
+                    premiumToppingCharge = 2.00;
+                    extraMeatCharge = 1.00;
+                    cheeseCharge = 1.50;
+                    extraCheeseCharge = .60;
+                }
+                case "12\"" -> {
+                    finalPrice += 8.50;
+                    premiumToppingCharge = 3.00;
+                    extraMeatCharge = 1.50;
+                    cheeseCharge = 2.25;
+                    extraCheeseCharge = .90;
+                }
             }
         }
         if (premiumToppings != null) {
@@ -150,5 +152,15 @@ public class Sandwich {
         }
 
         return finalPrice;
+    }
+
+
+    @Override
+    public String toString() {
+        return "\n\n\n\n\n\n--------Your current sandwich--------\n" + "\n" +
+                String.format("Bread Size: %s  |  Bread Type: %s\n", (size == null ? "Required" : size), (type == null ? "Required" : type)) +
+                "Meats: " + (premiumToppings != null ? premiumToppings.toString() : "N/A") + "\n" +
+                "Regular toppings: " + (regularToppings != null ? regularToppings.toString() : "N/A") + "\n" +
+                "Cheese: " + (cheese != null ? cheese : "N/A") + "Sauces: " + (sauces != null ? sauces : "N/A") + "\n\n" + String.format("Price: %.2f\n", getPrice());
     }
 }

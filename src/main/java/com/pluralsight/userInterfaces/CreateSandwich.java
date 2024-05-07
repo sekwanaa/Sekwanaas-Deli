@@ -44,21 +44,19 @@ public class CreateSandwich {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
-            System.out.print("""
-                    
+            System.out.printf("""
+                    %s
                     -------Customize your sandwich-------
                     
                     [1] Choose bread size
                     [2] Choose bread type
-                    [3] Choose premium toppings
-                    [4] Choose regular toppings
-                    [5] Choose cheese
-                    [6] Choose sauces
+                    [3] Choose meats (extra charge)
+                    [5] Choose cheese (only 1 cheese allowed)
                     
                     [f] Finalize sandwich
                     [x] Cancel sandwich
                     
-                    Enter choice:\s""");
+                    Enter choice:\s""", userSandwich);
 
             if (scanner.hasNextInt()) {
                 int userChoice = scanner.nextInt();
