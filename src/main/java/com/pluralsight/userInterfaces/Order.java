@@ -3,19 +3,25 @@ package com.pluralsight.userInterfaces;
 import com.pluralsight.models.Sandwich;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static java.lang.Double.valueOf;
 
 public class Order {
     public static List<Sandwich> sandwich = new ArrayList<>();
     public static Map<String, Integer> drinks = new HashMap<>();
-    public static int chips = 0;;
+    public static int chips = 0;
+    public static Set<String> sidesChoice = new HashSet<>();
+
+    private static final Map<Integer, String> sides = new TreeMap<>(Map.of(
+            1, "au jus",
+            2, "sauce"
+    ));
 
 
     public void homeScreen(Scanner scanner) {
         boolean isMakingOrder = true;
         while (isMakingOrder) {
-//            if (sandwich != null) {
-//                System.out.println("Your current order:\n\n" + this);
-//            }
             System.out.print("""
                 What would you like to add to your order?
                 
@@ -23,7 +29,6 @@ public class Order {
                 [2] Drinks
                 [3] Chips
                 [4] Sides
-                [5] Sauces
                 
                 [f] Finalize order
                 [x] Cancel order
@@ -80,11 +85,21 @@ public class Order {
                         break;
                     case 4:
                         // let users add sides if they want (use a set so they can only get one unique side)
-                        System.out.println("Sides");
-                        break;
-                    case 5:
-                        // let users add sauces if they want. Maybe a set? Maybe a map with a counter for how many sauces?
-                        System.out.println("Sauces");
+                        sides.forEach((number, side) -> System.out.printf("[%d] %s\n", number, side));
+                        System.out.println("\n[x] Cancel sides choice");
+                        System.out.print("Enter choice: ");
+
+                        if (scanner.hasNextInt()) {
+                            int userSidesChoice = scanner.nextInt();
+                            sidesChoice.add(sides.get(userSidesChoice));
+                        } else {
+                            String cancelSidesChoice = scanner.nextLine();
+                            if (cancelSidesChoice.equalsIgnoreCase("x")) {
+                                break;
+                            } else {
+                                System.out.println("This was not a valid sides choice. Please try again...");
+                            }
+                        }
                         break;
                     default:
                         System.out.println("That's not a valid choice, please try again...");
@@ -124,14 +139,15 @@ public class Order {
 
     @Override
     public String toString() {
-        System.out.println("here");
+        double subtotal = 0;
         StringBuilder output = new StringBuilder();
         output.append("""
-                                     Your Order
-                =================================================
+                                      Your Order
+                ===================================================
                 """);
         if (sandwich != null) {
-            sandwich.forEach(sandwich -> {
+            for (Sandwich sandwich : sandwich) {
+                subtotal += sandwich.getPrice();
                 String isToasted = sandwich.isToasted() ? "yes" : "no";
                 String hasExtraCheese = sandwich.hasExtraCheese() ? "yes" : "no";
                 String isExtraMeat = sandwich.isExtraMeat() ? "yes" : "no";
@@ -139,9 +155,9 @@ public class Order {
 
                 output.append(String.format("""
                     
-                    -------------------------------------------------
-                     Sandwich [%s %s]                       %.2f
-                    +===============================================+
+                    -----------------------------------------++--------
+                     Sandwich [%s %s]                     || %.2f
+                    +========================================++=======+
                      Cheese: %s
                      Toasted: %s  Extra Cheese: %s  Extra Meat: %s
                     """, sandwich.getSize(), sandwich.getType(), sandwich.getPrice(), cheese, isToasted, hasExtraCheese, isExtraMeat));
@@ -166,52 +182,72 @@ public class Order {
                 } else {
                     output.append("\tN/A\n");
                 }
-                output.append("\n-------------------------------------------------");
-
-
-            });
+            }
         }
 
         if (drinks != null) {
             output.append("""
                     
-                    -------------------------------------------------
-                     Drinks
-                    +===============================================+
+                    -----------------------------------------++--------
+                     Drinks                                  ||
+                    +========================================++=======+
                     """);
-            drinks.forEach((drink, count) -> {
+            for (Map.Entry<String, Integer> drink : drinks.entrySet()) {
                 double drinkCost = 0;
                 String drinkAbbrev = "";
-                switch (drink) {
+                switch (drink.getKey()) {
                     case "Small" -> {
-                        drinkCost = count * 2.00;
+                        drinkCost = drink.getValue() * 2.00;
                         drinkAbbrev = "Sm";
                     }
                     case "Medium" -> {
-                        drinkCost = count * 2.50;
+                        drinkCost = drink.getValue() * 2.50;
                         drinkAbbrev = "Md";
                     }
                     case "Large" -> {
-                        drinkCost = count * 3.00;
+                        drinkCost = drink.getValue() * 3.00;
                         drinkAbbrev = "Lg";
                     }
                 }
-                output.append(String.format("%d %s                                       %.2f\n", count, drinkAbbrev, drinkCost));
-            });
-            output.append("\n-------------------------------------------------");
-
+                subtotal += drinkCost;
+                output.append(String.format(" %d %s                                       %.2f\n", drink.getValue(), drinkAbbrev, drinkCost));
+            }
         }
 
         if (chips != 0) {
             double chipsCost = chips * 1.50;
+            subtotal += chipsCost;
             output.append(String.format("""
                     
-                    -------------------------------------------------
-                     %d Chips                               %.2f
-                    +===============================================+
+                    -----------------------------------------++--------
+                     %d Chips                                 || %.2f
+                    +========================================++=======+
                     """, chips, chipsCost));
-            output.append("\n-------------------------------------------------");
         }
+
+        if (sidesChoice != null) {
+            output.append("""
+                
+                -----------------------------------------++--------
+                 Sides                                   ||
+                +========================================++=======+
+                """);
+            sidesChoice.forEach(side -> output.append(String.format(" %s\n", side)));
+        }
+
+        output.append("\n-----------------------------------------++--------\n");
+
+        double tax = subtotal * 0.07;
+        double total = tax + subtotal;
+
+        output.append(String.format("""
+                 \sSubtotal                                || %.2f
+                 \sTax (7%%)                                || %.2f
+                 \sTotal                                   || %.2f
+                 """, subtotal, tax, total));
+        output.append("\n-----------------------------------------++--------\n");
+
+
         // continue printing info about each sandwich, and then each drink, etc.
         return output.toString();
     }

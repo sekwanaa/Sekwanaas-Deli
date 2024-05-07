@@ -131,8 +131,10 @@ public class Sandwich {
                 extraCheeseCharge = .90;
             }
         }
-        for (String ignored : premiumToppings) {
-            finalPrice += premiumToppingCharge;
+        if (premiumToppings != null) {
+            for (String ignored : premiumToppings) {
+                finalPrice += premiumToppingCharge;
+            }
         }
 
         if (cheese != null && !cheese.isEmpty()) {

@@ -157,18 +157,18 @@ public class CreateSandwich {
         boolean isChoosingToppings = true;
         while (isChoosingToppings) {
             System.out.println("Please choose which toppings to add:");
-            toppings.forEach((number, topping) -> {
-                System.out.printf("[%d] %s\n", number, topping);
-            });
+            toppings.forEach((number, topping) -> System.out.printf("[%d] %s\n", number, topping));
             System.out.print("""
                     
                     [D] Done
+                    [x] Cancel choosing toppings...
                     
                     Enter choice:\s""");
             int userChoice;
 
             if (scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
+                scanner.nextLine();
                 if (userChoice < 0 || userChoice > toppings.size()) {
                     System.out.println("Please provide a valid choice...");
                 } else if (userChoice == 0) {
@@ -177,29 +177,37 @@ public class CreateSandwich {
                     chosenToppings.add(toppings.get(userChoice));
                 }
             } else {
-                scanner.nextLine();
                 String userDone = scanner.nextLine();
-                if (userDone.equalsIgnoreCase("d")) {
-                    System.out.printf("""
+                switch (userDone) {
+                    case "D", "d":
+                        System.out.printf("""
                             Summary of %s toppings:
                             
                             """, type);
-                    chosenToppings.forEach(System.out::println);
-                    System.out.print("Is this correct? (Y/N): ");
-                    String accepted = scanner.nextLine();
-                    switch (accepted) {
-                        case "y", "Y" -> {
-                            if (type.equals("premium")) {
-                                userSandwich.setPremiumToppings(chosenToppings);
-                            } else if (type.equals("regular")) {
-                                userSandwich.setRegularToppings(chosenToppings);
+                        chosenToppings.forEach(System.out::println);
+                        System.out.print("Is this correct? (Y/N): ");
+                        String accepted = scanner.nextLine();
+                        switch (accepted) {
+                            case "y", "Y" -> {
+                                if (type.equals("premium")) {
+                                    userSandwich.setPremiumToppings(chosenToppings);
+                                } else if (type.equals("regular")) {
+                                    userSandwich.setRegularToppings(chosenToppings);
+                                }
+                                isChoosingToppings = false;
                             }
-                            isChoosingToppings = false;
+                            case "n", "N" -> {
+                                System.out.println("Okay, let's try again...");
+                            }
+                            default -> System.out.println("That is not a valid choice, try again...");
                         }
-                        case "n", "N" -> System.out.println("Okay, let's try again...");
-                    }
-                } else {
-                    System.out.println("This is not a valid choice... Please enter a valid choice.");
+                        break;
+                    case "X", "x":
+                        isChoosingToppings = false;
+                        break;
+                    default:
+                        System.out.println("This is not a valid choice... Please enter a valid choice.");
+                        break;
                 }
             }
         }
@@ -208,9 +216,24 @@ public class CreateSandwich {
 
     private void chooseCheese(Scanner scanner, Sandwich userSandwich, Map<Integer, String> cheeses) {
         cheeses.forEach((number, cheese) -> System.out.printf("[%d] %s\n", number, cheese));
+        System.out.println("\n[x] Cancel choosing cheese...\n\n");
         System.out.print("Enter choice: ");
-        int cheese = scanner.nextInt();
-        userSandwich.setCheese(cheeses.get(cheese));
+        if (scanner.hasNextInt()) {
+            int userChoice = scanner.nextInt();
+            if (userChoice < 0 || userChoice > cheeses.size()) {
+                System.out.println("Please provide a valid choice...");
+            } else {
+                userSandwich.setCheese(sauces.get(userChoice));
+            }
+        } else {
+            scanner.nextLine();
+            String userDone = scanner.nextLine();
+            if (userDone.equalsIgnoreCase("x")) {
+                System.out.println("Ok, no cheese...");
+            } else {
+                System.out.println("This is not a valid choice... Please enter a valid choice.");
+            }
+        }
     }
 
 
@@ -219,9 +242,7 @@ public class CreateSandwich {
         boolean isChoosingSauces = true;
         while (isChoosingSauces) {
             System.out.println("Please choose which toppings to add:");
-            sauces.forEach((number, sauce) -> {
-                System.out.printf("[%d] %s\n", number, sauce);
-            });
+            sauces.forEach((number, sauce) -> System.out.printf("[%d] %s\n", number, sauce));
             System.out.print("""
                     
                     [D] Done
