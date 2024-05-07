@@ -1,17 +1,53 @@
 package com.pluralsight.models;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
-public class Sandwich {
-    private String size;
-    private String type;
-    private Set<String> premiumToppings;
+public class Sandwich extends Order {
+    private Set<String> premiumToppingsList;
     private boolean extraMeat = false;
-    private Set<String> regularToppings;
+    private Set<String> regularToppingsList;
     private String cheese;
     private boolean extraCheese = false;
-    private Set<String> sauces;
+    private Set<String> saucesList;
     private boolean toasted = false;
+
+
+    public static final Map<Integer, String> premiumToppings = new TreeMap<>(Map.of(
+            1, "Steak",
+            2, "Ham",
+            3, "Salami",
+            4, "Roast Beef",
+            5, "Chicken",
+            6, "Bacon"
+    ));
+    public static final Map<Integer, String> regularToppings = new TreeMap<>(Map.of(
+            1, "Lettuce",
+            2, "Peppers",
+            3, "Onions",
+            4, "Tomatoes",
+            5, "Jalapenos",
+            6, "Cucumbers",
+            7, "Pickles",
+            8, "Guacamole",
+            9, "Mushrooms"
+    ));
+    public static final Map<Integer, String> cheeses = new TreeMap<>(Map.of(
+            1, "American",
+            2, "Provolone",
+            3, "Cheddar",
+            4, "Swiss"
+    ));
+    public static final Map<Integer, String> sauces = new TreeMap<>(Map.of(
+            1, "Mayo",
+            2, "Mustard",
+            3, "Ketchup",
+            4, "Ranch",
+            5, "Thousand Islands",
+            6, "Vinaigrette"
+    ));
+
 
     /*
     *
@@ -19,55 +55,30 @@ public class Sandwich {
     *
     * */
 
-    public String getSize() {
-        return size;
-    }
 
-    public void setSize(int choice) {
-        this.size = switch (choice) {
-            case 1 -> "4\"";
-            case 2 -> "8\"";
-            case 3 -> "12\"";
-            default -> "";
-        };
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(int choice) {
-        this.type = switch (choice) {
-            case 1 -> "Wheat";
-            case 2 -> "White";
-            case 3 -> "Rye";
-            case 4 -> "Wrap";
-            default -> "";
-        };
-    }
 
     public Set<String> getPremiumToppings() {
-        return premiumToppings;
+        return premiumToppingsList;
     }
 
     public void setPremiumToppings(Set<String> premiumToppings) {
-        this.premiumToppings = premiumToppings;
+        this.premiumToppingsList = premiumToppings;
     }
 
     public Set<String> getRegularToppings() {
-        return regularToppings;
+        return regularToppingsList;
     }
 
     public void setRegularToppings(Set<String> regularToppings) {
-        this.regularToppings = regularToppings;
+        this.regularToppingsList = regularToppings;
     }
 
     public Set<String> getSauces() {
-        return sauces;
+        return saucesList;
     }
 
     public void setSauces(Set<String> sauces) {
-        this.sauces = sauces;
+        this.saucesList = sauces;
     }
 
     public boolean isExtraMeat() {
@@ -108,8 +119,8 @@ public class Sandwich {
         double extraMeatCharge = 0;
         double cheeseCharge = 0;
         double extraCheeseCharge = 0;
-        if (size != null) {
-            switch (size) {
+        if (getSize() != null) {
+            switch (getSize()) {
                 case "4\"" -> {
                     finalPrice += 5.50;
                     premiumToppingCharge = 1.00;
@@ -133,8 +144,8 @@ public class Sandwich {
                 }
             }
         }
-        if (premiumToppings != null) {
-            for (String ignored : premiumToppings) {
+        if (premiumToppingsList != null) {
+            for (String ignored : premiumToppingsList) {
                 finalPrice += premiumToppingCharge;
             }
         }
@@ -158,9 +169,9 @@ public class Sandwich {
     @Override
     public String toString() {
         return "\n\n\n\n\n\n--------Your current sandwich--------\n" + "\n" +
-                String.format("Bread Size: %s  |  Bread Type: %s\n", (size == null ? "Required" : size), (type == null ? "Required" : type)) +
-                "Meats: " + (premiumToppings != null ? premiumToppings.toString() : "N/A") + "\n" +
-                "Regular toppings: " + (regularToppings != null ? regularToppings.toString() : "N/A") + "\n" +
-                "Cheese: " + (cheese != null ? cheese : "N/A") + "\n" + "Sauces: " + (sauces != null ? sauces : "N/A") + "\n\n" + String.format("Price: %.2f\n", getPrice());
+                String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +
+                "Meats: " + (premiumToppingsList != null ? premiumToppings.toString() : "N/A") + "\n" +
+                "Regular toppings: " + (regularToppingsList != null ? regularToppings.toString() : "N/A") + "\n" +
+                "Cheese: " + (cheese != null ? cheese : "N/A") + "\n" + "Sauces: " + (saucesList != null ? sauces : "N/A") + "\n\n" + String.format("Price: %.2f\n", getPrice());
     }
 }

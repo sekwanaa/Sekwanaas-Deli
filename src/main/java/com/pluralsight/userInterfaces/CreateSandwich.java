@@ -5,39 +5,6 @@ import com.pluralsight.models.Sandwich;
 import java.util.*;
 
 public class CreateSandwich {
-    Map<Integer, String> premiumToppings = new TreeMap<>(Map.of(
-            1, "Steak",
-            2, "Ham",
-            3, "Salami",
-            4, "Roast Beef",
-            5, "Chicken",
-            6, "Bacon"
-    ));
-    Map<Integer, String> regularToppings = new TreeMap<>(Map.of(
-            1, "Lettuce",
-            2, "Peppers",
-            3, "Onions",
-            4, "Tomatoes",
-            5, "Jalapenos",
-            6, "Cucumbers",
-            7, "Pickles",
-            8, "Guacamole",
-            9, "Mushrooms"
-    ));
-    Map<Integer, String> cheeses = new TreeMap<>(Map.of(
-            1, "American",
-            2, "Provolone",
-            3, "Cheddar",
-            4, "Swiss"
-    ));
-    Map<Integer, String> sauces = new TreeMap<>(Map.of(
-            1, "Mayo",
-            2, "Mustard",
-            3, "Ketchup",
-            4, "Ranch",
-            5, "Thousand Islands",
-            6, "Vinaigrette"
-    ));
 
 
     public void homeScreen(Scanner scanner) {
@@ -71,16 +38,16 @@ public class CreateSandwich {
                         chooseBreadType(scanner, userSandwich);
                         break;
                     case 3:
-                        chooseToppings(scanner, userSandwich, premiumToppings, "premium");
+                        chooseToppings(scanner, userSandwich, Sandwich.premiumToppings, "premium");
                         break;
                     case 4:
-                        chooseToppings(scanner, userSandwich, regularToppings, "regular");
+                        chooseToppings(scanner, userSandwich, Sandwich.regularToppings, "regular");
                         break;
                     case 5:
-                        chooseCheese(scanner, userSandwich, cheeses);
+                        chooseCheese(scanner, userSandwich, Sandwich.cheeses);
                         break;
                     case 6:
-                        chooseSauces(scanner, userSandwich, sauces);
+                        chooseSauces(scanner, userSandwich, Sandwich.sauces);
                         break;
                     default:
                         System.out.println("This is not a valid choice, please try again.");
@@ -136,7 +103,14 @@ public class CreateSandwich {
                             [3] 8" (price)
                             
                             Enter choice:\s""");
-        int breadSize = scanner.nextInt();
+        int breadSizeChoice = scanner.nextInt();
+        String breadSize = "";
+        switch (breadSizeChoice) {
+            case 1 -> breadSize ="4\"";
+            case 2 -> breadSize ="8\"";
+            case 3 -> breadSize ="12\"";
+            default -> breadSize ="";
+        };
         userSandwich.setSize(breadSize);
     }
 
@@ -149,7 +123,15 @@ public class CreateSandwich {
                             [4] Wrap
                             
                             Enter choice:\s""");
-        int breadType = scanner.nextInt();
+        int breadChoice = scanner.nextInt();
+        String breadType = "";
+        switch (breadChoice) {
+            case 1 -> breadType = "Wheat";
+            case 2 -> breadType = "White";
+            case 3 -> breadType = "Rye";
+            case 4 -> breadType = "Wrap";
+            default -> breadType = "";
+        };
         userSandwich.setType(breadType);
     }
 

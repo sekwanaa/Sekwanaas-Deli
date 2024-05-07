@@ -1,20 +1,18 @@
 package com.pluralsight.userInterfaces;
 
+import com.pluralsight.models.Drinks;
 import com.pluralsight.models.Receipt;
 import com.pluralsight.models.Sandwich;
 
 import java.util.*;
 
+import static com.pluralsight.models.Order.sides;
+
 public class OrderScreen {
     public static List<Sandwich> sandwich = new ArrayList<>();
-    public static Map<String, Integer> drinks = new HashMap<>();
+    public static List<Drinks> drinks = new ArrayList<>();
     public static int chips = 0;
     public static Set<String> sidesChoice = new HashSet<>();
-
-    private static final Map<Integer, String> sides = new TreeMap<>(Map.of(
-            1, "au jus",
-            2, "sauce"
-    ));
 
 
     public void homeScreen(Scanner scanner) {
@@ -45,33 +43,7 @@ public class OrderScreen {
                         break;
                     case 2:
                         // let users choose drink size
-                            System.out.print("""
-                                What size fountain drink would you like?
-                                
-                                [1] Small
-                                [2] Medium
-                                [3] Large
-                                
-                                [x] Cancel drink selection
-                                
-                                Enter choice:\s""");
-                            if (scanner.hasNextInt()) {
-                                int drinkChoice = scanner.nextInt();
-                                scanner.nextLine();
-                                switch (drinkChoice) {
-                                    case 1 -> addDrink("Small");
-                                    case 2 -> addDrink("Medium");
-                                    case 3 -> addDrink("Large");
-                                    default -> System.out.println("This is not a valid choice, try again.");
-                                }
-                            } else {
-                                String cancelSelection = scanner.nextLine();
-                                if (cancelSelection.equalsIgnoreCase("x")) {
-                                    break;
-                                } else {
-                                    System.out.println("This is not a valid command, please try again.");
-                                }
-                            }
+                        orderDrink(scanner);
                         break;
                     case 3:
                         // let users add chips if they want
@@ -140,9 +112,60 @@ public class OrderScreen {
         }
     }
 
-    private void addDrink(String size) {
-        drinks.computeIfPresent(size, (drink, count) -> count + 1);
-        drinks.putIfAbsent(size, 1);
+    private void orderDrink(Scanner scanner) {
+        System.out.print("""
+                What size fountain drink would you like?
+                
+                [1] Small
+                [2] Medium
+                [3] Large
+                
+                [x] Cancel drink selection
+                
+                Enter choice:\s""");
+        if (scanner.hasNextInt()) {
+            Drinks drink = new Drinks();
+            int drinkChoice = scanner.nextInt();
+            String size = "";
+            double price = switch (drinkChoice) {
+                case 1 -> {
+                    size = "Small";
+                    yield 2.00;
+                }
+                case 2 -> {
+                    size = "Medium";
+                    yield 2.50;
+                }
+                case 3 -> {
+                    size = "Large";
+                    yield 3.00;
+                }
+                default -> 0;
+            };
+            drink.setSize(size);
+            drink.setPrice(price);
+            System.out.println("""
+                    
+                    What drink would you like?
+                    """);
+            Drinks.drinksList.forEach((num, d) -> System.out.printf("[%d] %s\n", num, d));
+            System.out.print("\nEnter choice: ");
+            if (scanner.hasNextInt()) {
+                int drinkTypeChoice = scanner.nextInt();
+                drink.setType(Drinks.drinksList.get(drinkTypeChoice));
+                scanner.nextLine();
+                drinks.add(drink);
+            } else {
+                System.out.println("This is not a valid choice, please try again.");
+            }
+        } else {
+            String cancelSelection = scanner.nextLine();
+            if (cancelSelection.equalsIgnoreCase("x")) {
+                System.out.println();
+            } else {
+                System.out.println("This is not a valid command, please try again.");
+            }
+        }
     }
 
 
@@ -206,25 +229,21 @@ public class OrderScreen {
                      Drinks                                  ||
                     +========================================++=======+
                     """);
-            for (Map.Entry<String, Integer> drink : drinks.entrySet()) {
-                double drinkCost = 0;
                 String drinkAbbrev = "";
-                switch (drink.getKey()) {
+            for (Drinks drink : drinks) {
+                switch (drink.getSize()) {
                     case "Small" -> {
-                        drinkCost = drink.getValue() * 2.00;
                         drinkAbbrev = "Sm";
                     }
                     case "Medium" -> {
-                        drinkCost = drink.getValue() * 2.50;
                         drinkAbbrev = "Md";
                     }
                     case "Large" -> {
-                        drinkCost = drink.getValue() * 3.00;
                         drinkAbbrev = "Lg";
                     }
                 }
-                subtotal += drinkCost;
-                output.append(String.format(" %d %s                                       %.2f\n", drink.getValue(), drinkAbbrev, drinkCost));
+                subtotal += drink.getPrice();
+                output.append(String.format(" %s drink                                    %.2f\n %s\n\n", drinkAbbrev, drink.getPrice(), drink.getType()));
             }
         }
 
