@@ -113,7 +113,7 @@ public class CreateSandwich {
                                     userSandwich.setExtraMeat(true);
                                 }
                             }
-                            Order.sandwich.add(userSandwich);
+                            OrderScreen.sandwich.add(userSandwich);
                             isRunning = false;
                         } else {
                             System.out.println("Sorry, it seems that you haven't chosen the required items (sandwich size / sandwich type)\nPlease select one of each to finalize your sandwich.");

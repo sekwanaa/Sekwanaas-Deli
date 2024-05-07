@@ -1,6 +1,6 @@
 package com.pluralsight;
 
-import com.pluralsight.userInterfaces.Order;
+import com.pluralsight.userInterfaces.OrderScreen;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -26,7 +26,7 @@ public class Main {
 
                     switch (userChoice) {
                         case 1 -> {
-                            Order userOrder = new Order();
+                            OrderScreen userOrder = new OrderScreen();
                             userOrder.homeScreen(scanner);
                         }
                         case 0 -> System.exit(0);

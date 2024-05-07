@@ -4,11 +4,8 @@ import com.pluralsight.models.Receipt;
 import com.pluralsight.models.Sandwich;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static java.lang.Double.valueOf;
-
-public class Order {
+public class OrderScreen {
     public static List<Sandwich> sandwich = new ArrayList<>();
     public static Map<String, Integer> drinks = new HashMap<>();
     public static int chips = 0;
