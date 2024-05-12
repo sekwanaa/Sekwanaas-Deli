@@ -97,41 +97,70 @@ public class CreateSandwich {
 
 
     private void chooseBreadSize(Scanner scanner, Sandwich userSandwich) {
-        System.out.print("""
-                            [1] 4" (price)
-                            [2] 6" (price)
-                            [3] 8" (price)
-                            
-                            Enter choice:\s""");
-        int breadSizeChoice = scanner.nextInt();
+        boolean isChoosingBreadSize = true;
         String breadSize = "";
-        switch (breadSizeChoice) {
-            case 1 -> breadSize ="4\"";
-            case 2 -> breadSize ="8\"";
-            case 3 -> breadSize ="12\"";
-            default -> breadSize ="";
-        };
+        while (isChoosingBreadSize) {
+            System.out.print("""
+                    [1] 4" (price)
+                    [2] 6" (price)
+                    [3] 8" (price)
+                    
+                    Enter choice:\s""");
+            int breadSizeChoice = scanner.nextInt();
+            switch (breadSizeChoice) {
+                case 1 -> {
+                    breadSize = "4\"";
+                    isChoosingBreadSize = false;
+                }
+                case 2 -> {
+                    breadSize = "8\"";
+                    isChoosingBreadSize = false;
+                }
+                case 3 -> {
+                    breadSize = "12\"";
+                    isChoosingBreadSize = false;
+                }
+                default -> System.out.println("That is not a valid choice, please select a valid option...");
+
+            }
+        }
         userSandwich.setSize(breadSize);
     }
 
 
     private void chooseBreadType(Scanner scanner, Sandwich userSandwich) {
-        System.out.print("""
+        boolean isChoosingBreadType = true;
+        String breadType = "";
+        while (isChoosingBreadType) {
+            System.out.print("""
                             [1] Wheat
                             [2] White
                             [3] Rye
                             [4] Wrap
                             
                             Enter choice:\s""");
-        int breadChoice = scanner.nextInt();
-        String breadType = "";
-        switch (breadChoice) {
-            case 1 -> breadType = "Wheat";
-            case 2 -> breadType = "White";
-            case 3 -> breadType = "Rye";
-            case 4 -> breadType = "Wrap";
-            default -> breadType = "";
-        };
+            int breadChoice = scanner.nextInt();
+            switch (breadChoice) {
+                case 1 -> {
+                    breadType = "Wheat";
+                    isChoosingBreadType = false;
+                }
+                case 2 -> {
+                    breadType = "White";
+                    isChoosingBreadType = false;
+                }
+                case 3 -> {
+                    breadType = "Rye";
+                    isChoosingBreadType = false;
+                }
+                case 4 -> {
+                    breadType = "Wrap";
+                    isChoosingBreadType = false;
+                }
+                default -> System.out.println("That is not a valid choice, please select a valid option...");
+            };
+
+        }
         userSandwich.setType(breadType);
     }
 

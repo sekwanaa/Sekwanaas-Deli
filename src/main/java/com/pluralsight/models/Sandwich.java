@@ -181,6 +181,6 @@ public class Sandwich extends Order {
                 "\n" + "Cheese: " + (cheese != null ? cheese : "N/A") +
                 "\n" + "Sauces: " + (saucesList != null ? saucesList.toString() : "N/A") +
                 "\n\n" +
-                String.format("Price: %.2f\n", getPrice());
+                String.format("Price: $%.2f\n", getPrice());
     }
 }

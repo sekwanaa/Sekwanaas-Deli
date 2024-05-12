@@ -20,6 +20,8 @@ public class OrderScreen {
         boolean isMakingOrder = true;
         while (isMakingOrder) {
             Utilities.createBigBlankSpace();
+            System.out.println(this);
+            System.out.println("\n");
             System.out.print("""
                 What would you like to add to your order?
                 
@@ -221,7 +223,7 @@ public class OrderScreen {
             }
         }
 
-        if (drinks != null) {
+        if (!drinks.isEmpty()) {
             output.append(Utilities.createHeader("Drinks"));
                 String drinkAbbrev = "";
             for (Drinks drink : drinks) {
@@ -237,7 +239,7 @@ public class OrderScreen {
                     }
                 }
                 subtotal += drink.getPrice();
-                output.append(String.format(" %s drink%-35s%.2f\n %s\n\n", drinkAbbrev, " ", drink.getPrice(), drink.getType()));
+                output.append(String.format(" %s drink%-35s$%.2f\n %s\n\n", drinkAbbrev, " ", drink.getPrice(), drink.getType()));
             }
         }
 
@@ -246,11 +248,11 @@ public class OrderScreen {
             subtotal += chipsCost;
             output.append((Utilities.createHeader("Chips")));
             output.append(String.format("""
-                     %d Regular%-34s%.2f
+                     %d Regular%-34s$%.2f
                     """, chips, " ", chipsCost));
         }
 
-        if (sidesChoice != null) {
+        if (!sidesChoice.isEmpty()) {
             output.append(Utilities.createHeader("Sides"));
             sidesChoice.forEach(side -> output.append(String.format(" %s\n", side)));
         }
@@ -261,9 +263,9 @@ public class OrderScreen {
         double total = tax + subtotal;
 
         output.append(String.format("""
-                 \sSubtotal                                || %.2f
-                 \sTax (7%%)                                || %.2f
-                 \sTotal                                   || %.2f
+                 \sSubtotal                                || $%.2f
+                 \sTax (7%%)                                || $%.2f
+                 \sTotal                                   || $%.2f
                  """, subtotal, tax, total));
         output.append("-----------------------------------------++--------\n");
 

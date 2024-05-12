@@ -56,7 +56,7 @@ public class Utilities {
         for (int i = 0; i < spaces; i++) {
             builder.append(" ");
         }
-        builder.append(String.format("|| %.2f\n", price));
+        builder.append(String.format("|| $%.2f\n", price));
         builder.append(Utilities.createOuterLine()).append("\n");
         return builder.toString();
     }
