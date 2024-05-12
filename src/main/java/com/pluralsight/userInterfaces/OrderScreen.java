@@ -228,15 +228,9 @@ public class OrderScreen {
                 String drinkAbbrev = "";
             for (Drinks drink : drinks) {
                 switch (drink.getSize()) {
-                    case "Small" -> {
-                        drinkAbbrev = "Sm";
-                    }
-                    case "Medium" -> {
-                        drinkAbbrev = "Md";
-                    }
-                    case "Large" -> {
-                        drinkAbbrev = "Lg";
-                    }
+                    case "Small" -> drinkAbbrev = "Sm";
+                    case "Medium" -> drinkAbbrev = "Md";
+                    case "Large" -> drinkAbbrev = "Lg";
                 }
                 subtotal += drink.getPrice();
                 output.append(String.format(" %s drink%-35s$%.2f\n %s\n\n", drinkAbbrev, " ", drink.getPrice(), drink.getType()));
@@ -263,10 +257,10 @@ public class OrderScreen {
         double total = tax + subtotal;
 
         output.append(String.format("""
-                 \sSubtotal                                || $%.2f
-                 \sTax (7%%)                                || $%.2f
-                 \sTotal                                   || $%.2f
-                 """, subtotal, tax, total));
+                 Subtotal                                || $%.2f
+                 Tax (7%%)                                || $%.2f
+                 Total                                   || $%.2f
+                """, subtotal, tax, total));
         output.append("-----------------------------------------++--------\n");
 
 

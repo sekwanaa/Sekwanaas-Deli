@@ -1,7 +1,5 @@
 package com.pluralsight.Utilities;
 
-import java.util.Map;
-
 public class Utilities {
 
     private Utilities() {}
@@ -12,23 +10,9 @@ public class Utilities {
         int leftPadding = totalPadding / 2;
         int rightPadding = totalPadding - leftPadding;
 
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < leftPadding; i++) {
-            builder.append(padChar);
-        }
-        builder.append(message);
-        for (int i = 0; i < rightPadding; i++) {
-            builder.append(padChar);
-        }
-        return builder.toString();
-    }
-
-    public static String createLineofChars(int width, char fillChar) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < width; i++) {
-            builder.append(fillChar);
-        }
-        return builder.toString();
+        return String.valueOf(padChar).repeat(Math.max(0, leftPadding)) +
+                message +
+                String.valueOf(padChar).repeat(Math.max(0, rightPadding));
     }
 
     public static String createHeader(String header) {
@@ -38,9 +22,7 @@ public class Utilities {
         builder.append(" ");
         builder.append(header);
         int spaces = 40 - header.length();
-        for (int i = 0; i < spaces; i++) {
-            builder.append(" ");
-        }
+        builder.append(" ".repeat(Math.max(0, spaces)));
         builder.append("||\n");
         builder.append(Utilities.createOuterLine()).append("\n");
         return builder.toString();
@@ -53,9 +35,7 @@ public class Utilities {
         builder.append(" ");
         builder.append(header);
         int spaces = 40 - header.length();
-        for (int i = 0; i < spaces; i++) {
-            builder.append(" ");
-        }
+        builder.append(" ".repeat(Math.max(0, spaces)));
         builder.append(String.format("|| $%.2f\n", price));
         builder.append(Utilities.createOuterLine()).append("\n");
         return builder.toString();

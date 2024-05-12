@@ -12,10 +12,11 @@ public class CreateSandwich {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            Utilities.createBigBlankSpace();
             System.out.printf("\n%s\n", userSandwich);
             System.out.println(Utilities.centerMessage("Customize your sandwich", 45, '-'));
             System.out.print("""
+                    
                     [1] Choose bread size
                     [2] Choose bread type
                     [3] Choose meats (extra charge)
@@ -44,10 +45,10 @@ public class CreateSandwich {
                         chooseToppings(scanner, userSandwich, Sandwich.regularToppings, "regular");
                         break;
                     case 5:
-                        chooseCheese(scanner, userSandwich, Sandwich.cheeses);
+                        chooseCheese(scanner, userSandwich);
                         break;
                     case 6:
-                        chooseSauces(scanner, userSandwich, Sandwich.sauces);
+                        chooseSauces(scanner, userSandwich);
                         break;
                     default:
                         System.out.println("This is not a valid choice, please try again.");
@@ -98,6 +99,9 @@ public class CreateSandwich {
 
     private void chooseBreadSize(Scanner scanner, Sandwich userSandwich) {
         boolean isChoosingBreadSize = true;
+        Utilities.createBigBlankSpace();
+        System.out.println(Utilities.centerMessage("Choosing Bread Size", 50, '='));
+        System.out.print("\n");
         String breadSize = "";
         while (isChoosingBreadSize) {
             System.out.print("""
@@ -130,6 +134,9 @@ public class CreateSandwich {
 
     private void chooseBreadType(Scanner scanner, Sandwich userSandwich) {
         boolean isChoosingBreadType = true;
+        Utilities.createBigBlankSpace();
+        System.out.println(Utilities.centerMessage("Choosing Bread Type", 50, '='));
+        System.out.print("\n");
         String breadType = "";
         while (isChoosingBreadType) {
             System.out.print("""
@@ -158,13 +165,16 @@ public class CreateSandwich {
                     isChoosingBreadType = false;
                 }
                 default -> System.out.println("That is not a valid choice, please select a valid option...");
-            };
+            }
 
         }
         userSandwich.setType(breadType);
     }
 
     private void chooseToppings(Scanner scanner, Sandwich userSandwich, Map<Integer, String> toppings, String type) {
+        Utilities.createBigBlankSpace();
+        System.out.println(Utilities.centerMessage("Choosing toppings", 50, '='));
+        System.out.print("\n");
         Set<String> chosenToppings = new HashSet<>();
         boolean isChoosingToppings = true;
         while (isChoosingToppings) {
@@ -208,9 +218,7 @@ public class CreateSandwich {
                                 }
                                 isChoosingToppings = false;
                             }
-                            case "n", "N" -> {
-                                System.out.println("Okay, let's try again...");
-                            }
+                            case "n", "N" -> System.out.println("Okay, let's try again...");
                             default -> System.out.println("That is not a valid choice, try again...");
                         }
                         break;
@@ -226,35 +234,46 @@ public class CreateSandwich {
     }
 
 
-    private void chooseCheese(Scanner scanner, Sandwich userSandwich, Map<Integer, String> cheeses) {
-        cheeses.forEach((number, cheese) -> System.out.printf("[%d] %s\n", number, cheese));
-        System.out.println("\n[x] Cancel choosing cheese...\n\n");
-        System.out.print("Enter choice: ");
-        if (scanner.hasNextInt()) {
-            int userChoice = scanner.nextInt();
-            if (userChoice < 0 || userChoice > cheeses.size()) {
-                System.out.println("Please provide a valid choice...");
+    private void chooseCheese(Scanner scanner, Sandwich userSandwich) {
+        boolean isChoosingCheeses = true;
+        Utilities.createBigBlankSpace();
+        System.out.println(Utilities.centerMessage("Choosing cheese", 50, '='));
+        System.out.print("\n");
+        while (isChoosingCheeses) {
+            Sandwich.cheeses.forEach((number, cheese) -> System.out.printf("[%d] %s\n", number, cheese));
+            System.out.println("\n[x] Cancel choosing cheese...\n\n");
+            System.out.print("Enter choice: ");
+            if (scanner.hasNextInt()) {
+                int userChoice = scanner.nextInt();
+                if (userChoice < 0 || userChoice > Sandwich.cheeses.size()) {
+                    System.out.println("Please provide a valid choice...");
+                } else {
+                    userSandwich.setCheese(Sandwich.cheeses.get(userChoice));
+                    isChoosingCheeses = false;
+                }
             } else {
-                userSandwich.setCheese(cheeses.get(userChoice));
-            }
-        } else {
-            scanner.nextLine();
-            String userDone = scanner.nextLine();
-            if (userDone.equalsIgnoreCase("x")) {
-                System.out.println("Ok, no cheese...");
-            } else {
-                System.out.println("This is not a valid choice... Please enter a valid choice.");
+                scanner.nextLine();
+                String userDone = scanner.nextLine();
+                if (userDone.equalsIgnoreCase("x")) {
+                    System.out.println("Ok, no cheese...");
+                    isChoosingCheeses = false;
+                } else {
+                    System.out.println("This is not a valid choice... Please enter a valid choice.");
+                }
             }
         }
     }
 
 
-    private void chooseSauces(Scanner scanner, Sandwich userSandwich, Map<Integer, String> sauces) {
+    private void chooseSauces(Scanner scanner, Sandwich userSandwich) {
         Set<String> chosenSauces = new HashSet<>();
         boolean isChoosingSauces = true;
+        Utilities.createBigBlankSpace();
+        System.out.println(Utilities.centerMessage("Choosing sauces", 50, '='));
+        System.out.print("\n");
         while (isChoosingSauces) {
             System.out.println("Please choose which toppings to add:");
-            sauces.forEach((number, sauce) -> System.out.printf("[%d] %s\n", number, sauce));
+            Sandwich.sauces.forEach((number, sauce) -> System.out.printf("[%d] %s\n", number, sauce));
             System.out.print("""
                     
                     [D] Done
@@ -264,12 +283,12 @@ public class CreateSandwich {
 
             if (scanner.hasNextInt()) {
                 userChoice = scanner.nextInt();
-                if (userChoice < 0 || userChoice > sauces.size()) {
+                if (userChoice < 0 || userChoice > Sandwich.sauces.size()) {
                     System.out.println("Please provide a valid choice...");
                 } else if (userChoice == 0) {
                     break;
                 } else {
-                    chosenSauces.add(sauces.get(userChoice));
+                    chosenSauces.add(Sandwich.sauces.get(userChoice));
                 }
             } else {
                 scanner.nextLine();

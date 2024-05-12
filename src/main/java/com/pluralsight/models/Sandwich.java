@@ -171,7 +171,7 @@ public class Sandwich extends Order {
     @Override
     public String toString() {
         return Utilities.centerMessage("Your current sandwich", 45, '-') +
-                "\n" +
+                "\n\n" +
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +
                 "Meats: " +
                 (premiumToppingsList != null ? premiumToppingsList.toString() : "N/A") +
