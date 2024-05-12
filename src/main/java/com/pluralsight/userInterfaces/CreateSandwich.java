@@ -1,5 +1,6 @@
 package com.pluralsight.userInterfaces;
 
+import com.pluralsight.Utilities.Utilities;
 import com.pluralsight.models.Sandwich;
 
 import java.util.*;
@@ -12,10 +13,9 @@ public class CreateSandwich {
         boolean isRunning = true;
         while (isRunning) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-            System.out.printf("""
-                    %s
-                    -------Customize your sandwich-------
-                    
+            System.out.printf("\n%s\n", userSandwich);
+            System.out.println(Utilities.centerMessage("Customize your sandwich", 45, '-'));
+            System.out.print("""
                     [1] Choose bread size
                     [2] Choose bread type
                     [3] Choose meats (extra charge)
@@ -26,7 +26,7 @@ public class CreateSandwich {
                     [f] Finalize sandwich
                     [x] Cancel sandwich
                     
-                    Enter choice:\s""", userSandwich);
+                    Enter choice:\s""");
 
             if (scanner.hasNextInt()) {
                 int userChoice = scanner.nextInt();

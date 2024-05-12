@@ -1,5 +1,7 @@
 package com.pluralsight.models;
 
+import com.pluralsight.Utilities.Utilities;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -168,10 +170,17 @@ public class Sandwich extends Order {
 
     @Override
     public String toString() {
-        return "\n\n\n\n\n\n--------Your current sandwich--------\n" + "\n" +
+        return Utilities.centerMessage("Your current sandwich", 45, '-') +
+                "\n" +
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +
-                "Meats: " + (premiumToppingsList != null ? premiumToppings.toString() : "N/A") + "\n" +
-                "Regular toppings: " + (regularToppingsList != null ? regularToppings.toString() : "N/A") + "\n" +
-                "Cheese: " + (cheese != null ? cheese : "N/A") + "\n" + "Sauces: " + (saucesList != null ? sauces : "N/A") + "\n\n" + String.format("Price: %.2f\n", getPrice());
+                "Meats: " +
+                (premiumToppingsList != null ? premiumToppingsList.toString() : "N/A") +
+                "\n" +
+                "Regular toppings: " +
+                (regularToppingsList != null ? regularToppingsList.toString() : "N/A") +
+                "\n" + "Cheese: " + (cheese != null ? cheese : "N/A") +
+                "\n" + "Sauces: " + (saucesList != null ? saucesList.toString() : "N/A") +
+                "\n\n" +
+                String.format("Price: %.2f\n", getPrice());
     }
 }

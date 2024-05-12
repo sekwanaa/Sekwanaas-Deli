@@ -1,5 +1,6 @@
 package com.pluralsight.userInterfaces;
 
+import com.pluralsight.Utilities.Utilities;
 import com.pluralsight.models.Drinks;
 import com.pluralsight.models.Receipt;
 import com.pluralsight.models.Sandwich;
@@ -18,7 +19,7 @@ public class OrderScreen {
     public void homeScreen(Scanner scanner) {
         boolean isMakingOrder = true;
         while (isMakingOrder) {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            Utilities.createBigBlankSpace();
             System.out.print("""
                 What would you like to add to your order?
                 
@@ -189,15 +190,13 @@ public class OrderScreen {
                 String hasExtraCheese = sandwich.hasExtraCheese() ? "yes" : "no";
                 String isExtraMeat = sandwich.isExtraMeat() ? "yes" : "no";
                 String cheese = sandwich.getCheese() != null ? sandwich.getCheese() : "N/A";
+                String sandwichInfo = String.format("Sandwich [%s %s]",sandwich.getSize(), sandwich.getType());
 
+                output.append(" ").append(Utilities.createHeader(sandwichInfo, sandwich.getPrice()));
                 output.append(String.format("""
-                    
-                    -----------------------------------------++--------
-                     Sandwich [%s %s]                     || %.2f
-                    +========================================++=======+
                      Cheese: %s
-                     Toasted: %s  Extra Cheese: %s  Extra Meat: %s
-                    """, sandwich.getSize(), sandwich.getType(), sandwich.getPrice(), cheese, isToasted, hasExtraCheese, isExtraMeat));
+                     Toasted: %s | Extra Cheese: %s | Extra Meat: %s
+                    """, cheese, isToasted, hasExtraCheese, isExtraMeat));
 
                 output.append("\n Premium Toppings:\n");
                 if (sandwich.getPremiumToppings() != null) {
@@ -223,12 +222,7 @@ public class OrderScreen {
         }
 
         if (drinks != null) {
-            output.append("""
-                    
-                    -----------------------------------------++--------
-                     Drinks                                  ||
-                    +========================================++=======+
-                    """);
+            output.append(Utilities.createHeader("Drinks"));
                 String drinkAbbrev = "";
             for (Drinks drink : drinks) {
                 switch (drink.getSize()) {
@@ -243,29 +237,21 @@ public class OrderScreen {
                     }
                 }
                 subtotal += drink.getPrice();
-                output.append(String.format(" %s drink                                    %.2f\n %s\n\n", drinkAbbrev, drink.getPrice(), drink.getType()));
+                output.append(String.format(" %s drink%-35s%.2f\n %s\n\n", drinkAbbrev, " ", drink.getPrice(), drink.getType()));
             }
         }
 
         if (chips != 0) {
             double chipsCost = chips * 1.50;
             subtotal += chipsCost;
+            output.append((Utilities.createHeader("Chips")));
             output.append(String.format("""
-                    
-                    -----------------------------------------++--------
-                     Chips                                   ||
-                    +========================================++=======+
-                     %d Regular                                 %.2f
-                    """, chips, chipsCost));
+                     %d Regular%-34s%.2f
+                    """, chips, " ", chipsCost));
         }
 
         if (sidesChoice != null) {
-            output.append("""
-                
-                -----------------------------------------++--------
-                 Sides                                   ||
-                +========================================++=======+
-                """);
+            output.append(Utilities.createHeader("Sides"));
             sidesChoice.forEach(side -> output.append(String.format(" %s\n", side)));
         }
 
