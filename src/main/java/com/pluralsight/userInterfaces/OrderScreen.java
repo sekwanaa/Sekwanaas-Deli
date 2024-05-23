@@ -104,14 +104,13 @@ public class OrderScreen {
                 case "F", "f" -> {
                     // add items to receipt and finalize the order
                     Utilities.clearConsole();
-                    System.out.println(this);
+                    System.out.println(userOrder);
                     System.out.print("\n\n\n\nIs the order correct? (Y/N): ");
                     String orderFinished = Inputs.getString();
 
                     switch (orderFinished) {
                         case "Y", "y":
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + this);
-                            ReceiptManager.createReceipt(this.toString());
+                            ReceiptManager.createReceipt(userOrder.toString());
                             currentlyOrdering = false;
                             break;
                         case "N", "n":
@@ -188,5 +187,9 @@ public class OrderScreen {
                 System.out.println("This was not a valid sides choice. Please try again...");
             }
         }
+    }
+
+    public Order getUserOrder() {
+        return this.userOrder;
     }
 }
