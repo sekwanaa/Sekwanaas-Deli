@@ -49,8 +49,10 @@ public class Utilities {
         return "=========================================++========";
     }
 
-    public static void createBigBlankSpace() {
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    public static void clearConsole() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
     }
 
 

@@ -2,11 +2,11 @@ package com.pluralsight.models;
 
 import com.pluralsight.Utilities.Utilities;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class Sandwich extends Order {
+    private String size;
+    private String type;
     private Set<String> premiumToppingsList;
     private boolean extraMeat = false;
     private Set<String> regularToppingsList;
@@ -16,48 +16,27 @@ public class Sandwich extends Order {
     private boolean toasted = false;
 
 
-    public static final Map<Integer, String> premiumToppings = new TreeMap<>(Map.of(
-            1, "Steak",
-            2, "Ham",
-            3, "Salami",
-            4, "Roast Beef",
-            5, "Chicken",
-            6, "Bacon"
-    ));
-    public static final Map<Integer, String> regularToppings = new TreeMap<>(Map.of(
-            1, "Lettuce",
-            2, "Peppers",
-            3, "Onions",
-            4, "Tomatoes",
-            5, "Jalapenos",
-            6, "Cucumbers",
-            7, "Pickles",
-            8, "Guacamole",
-            9, "Mushrooms"
-    ));
-    public static final Map<Integer, String> cheeses = new TreeMap<>(Map.of(
-            1, "American",
-            2, "Provolone",
-            3, "Cheddar",
-            4, "Swiss"
-    ));
-    public static final Map<Integer, String> sauces = new TreeMap<>(Map.of(
-            1, "Mayo",
-            2, "Mustard",
-            3, "Ketchup",
-            4, "Ranch",
-            5, "Thousand Islands",
-            6, "Vinaigrette"
-    ));
-
-
     /*
     *
     * Getters and Setters
     *
     * */
 
+    public String getSize() {
+        return this.size;
+    }
 
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Set<String> getPremiumToppings() {
         return premiumToppingsList;
@@ -170,6 +149,43 @@ public class Sandwich extends Order {
 
     @Override
     public String toString() {
+        StringBuilder output = new StringBuilder();
+        String isToasted = isToasted() ? "yes" : "no";
+        String hasExtraCheese = hasExtraCheese() ? "yes" : "no";
+        String isExtraMeat = isExtraMeat() ? "yes" : "no";
+        String cheese = getCheese() != null ? getCheese() : "N/A";
+        String sandwichInfo = String.format("Sandwich [%s %s]", getSize(), getType());
+
+        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(String.format("""
+                         Cheese: %s
+                         Toasted: %s | Extra Cheese: %s | Extra Meat: %s
+                        """, cheese, isToasted, hasExtraCheese, isExtraMeat));
+
+        output.append("\n Premium Toppings:\n");
+        if (getPremiumToppings() != null) {
+            getPremiumToppings().forEach(premiumTopping -> output.append(String.format("\t%s\n", premiumTopping)));
+        } else {
+            output.append("\tN/A\n");
+        }
+
+        output.append("\n Regular Toppings:\n");
+        if (getRegularToppings() != null) {
+            getRegularToppings().forEach(regularTopping -> output.append(String.format("\t%s\n", regularTopping)));
+        } else {
+            output.append("\tN/A\n");
+        }
+
+        output.append("\n Sauces:\n");
+        if (getSauces() != null) {
+            getSauces().forEach(sauce -> output.append(String.format("\t%s\n", sauce)));
+        } else {
+            output.append("\tN/A\n");
+        }
+        return output.toString();
+    }
+
+    public String displayCurrentSandwich() {
         return Utilities.centerMessage("Your current sandwich", 45, '-') +
                 "\n\n" +
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +

@@ -1,17 +1,33 @@
 package com.pluralsight.models;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 public class Drinks extends Order {
-    public static final Map<Integer, String> drinksList = new TreeMap<>(Map.of(
-            1, "Coke",
-            2, "Root Beer",
-            3, "Pepsi",
-            4, "Dr. Pepper",
-            5, "Fanta",
-            6, "Lemonade"
-    ));
+    private String brand;
+    private String size;
+    private double price;
 
+    //Getters and Setters
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
