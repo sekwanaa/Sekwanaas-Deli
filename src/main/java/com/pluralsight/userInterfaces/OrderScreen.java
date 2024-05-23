@@ -5,22 +5,21 @@ import com.pluralsight.Utilities.Utilities;
 import com.pluralsight.models.Drinks;
 import com.pluralsight.models.Order;
 import com.pluralsight.DataManagers.ReceiptManager;
-import com.pluralsight.models.Sandwich;
-
-import java.util.*;
 
 public class OrderScreen {
-    public static List<Sandwich> sandwich = new ArrayList<>();
-    public static List<Drinks> drinks = new ArrayList<>();
-    public static int chips = 0;
-    public static Set<String> sidesChoice = new HashSet<>();
+    private final Order userOrder;
 
+    public OrderScreen() {
+        this.userOrder = new Order();
+    }
+
+    //Menus
 
     public void homeScreen() {
         boolean currentlyOrdering = true;
         while (currentlyOrdering) {
             Utilities.clearConsole();
-            System.out.println(this);
+            System.out.println(userOrder);
             System.out.println("\n");
             System.out.print("""
                     What would you like to add to your order?
@@ -39,6 +38,39 @@ public class OrderScreen {
         }
     }
 
+    private void orderDrink() {
+        Utilities.clearConsole();
+        System.out.print("""
+                What size fountain drink would you like?
+                
+                [1] Small
+                [2] Medium
+                [3] Large
+                
+                [x] Cancel drink selection
+                
+                Enter choice:\s""");
+
+        processDrinkMenuChoice();
+    }
+
+    private void addChips() {
+        userOrder.addChipsToOrder();
+    }
+
+    private void orderSides() {
+        Utilities.clearConsole();
+        System.out.println(Utilities.centerMessage("Choosing sides", 50, '='));
+        System.out.print("\n");
+        userOrder.sides.forEach((number, side) -> System.out.printf("[%d] %s\n", number, side));
+        System.out.println("\n[x] Cancel sides choice");
+        System.out.print("Enter choice: ");
+
+        processSidesMenuChoice();
+    }
+
+    //Processing Menu Choices
+
     private boolean processOrderMenuChoice(boolean currentlyOrdering) {
         String orderMenuChoice = Inputs.getString();
 
@@ -47,8 +79,8 @@ public class OrderScreen {
             switch (userChoice) {
                 case 1:
                     // go to createSandwich interface since it's complicated
-                    CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen();
-                    createSandwichScreen.homeScreen();
+                    CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
+                    createSandwichScreen.sandwichCreationScreen();
                     break;
                 case 2:
                     // let users choose drink size
@@ -91,13 +123,7 @@ public class OrderScreen {
                     }
 
                 }
-                case "X", "x" -> {
-                    // clear all static lists so that when they create a new order there's nothing in it.
-                    sandwich.clear();
-                    drinks.clear();
-                    chips = 0;
-                    currentlyOrdering = false;
-                }
+                case "X", "x" -> currentlyOrdering = false;
                 default -> {
                     System.out.print("This is not a valid choice, press ENTER try again.");
                     Inputs.awaitInput();
@@ -107,18 +133,7 @@ public class OrderScreen {
         return currentlyOrdering;
     }
 
-    private void orderDrink() {
-        System.out.print("""
-                What size fountain drink would you like?
-                
-                [1] Small
-                [2] Medium
-                [3] Large
-                
-                [x] Cancel drink selection
-                
-                Enter choice:\s""");
-
+    private void processDrinkMenuChoice() {
         String userChoice = Inputs.getString();
 
         try {
@@ -142,15 +157,16 @@ public class OrderScreen {
             };
             drink.setSize(size);
             drink.setPrice(price);
+            Utilities.clearConsole();
             System.out.println("""
                     
                     What drink would you like?
                     """);
-            Drinks.drinksList.forEach((num, d) -> System.out.printf("[%d] %s\n", num, d));
+            userOrder.drinksList.forEach((num, d) -> System.out.printf("[%d] %s\n", num, d));
             System.out.print("\nEnter choice: ");
             int drinkTypeChoice = Inputs.getInt();
-            drink.setType(Drinks.drinksList.get(drinkTypeChoice));
-            drinks.add(drink);
+            drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
+            userOrder.addDrinkToOrder(drink);
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -160,19 +176,11 @@ public class OrderScreen {
         }
     }
 
-    private void addChips() {
-        chips++;
-    }
-
-    private void orderSides() {
-        Order.sides.forEach((number, side) -> System.out.printf("[%d] %s\n", number, side));
-        System.out.println("\n[x] Cancel sides choice");
-        System.out.print("Enter choice: ");
-
+    private void processSidesMenuChoice() {
         String userChoice = Inputs.getString();
         try {
             int userSidesChoice = Integer.parseInt(userChoice);
-            sidesChoice.add(Order.sides.get(userSidesChoice));
+            userOrder.addSideToOrder(userOrder.sides.get(userSidesChoice));
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -180,97 +188,5 @@ public class OrderScreen {
                 System.out.println("This was not a valid sides choice. Please try again...");
             }
         }
-    }
-
-
-    @Override
-    public String toString() {
-        double subtotal = 0;
-        StringBuilder output = new StringBuilder();
-        output.append("""
-                                      Your Order
-                ===================================================
-                """);
-        if (sandwich != null) {
-            for (Sandwich sandwich : sandwich) {
-                subtotal += sandwich.getPrice();
-                String isToasted = sandwich.isToasted() ? "yes" : "no";
-                String hasExtraCheese = sandwich.hasExtraCheese() ? "yes" : "no";
-                String isExtraMeat = sandwich.isExtraMeat() ? "yes" : "no";
-                String cheese = sandwich.getCheese() != null ? sandwich.getCheese() : "N/A";
-                String sandwichInfo = String.format("Sandwich [%s %s]", sandwich.getSize(), sandwich.getType());
-
-                output.append(" ").append(Utilities.createHeader(sandwichInfo, sandwich.getPrice()));
-                output.append(String.format("""
-                         Cheese: %s
-                         Toasted: %s | Extra Cheese: %s | Extra Meat: %s
-                        """, cheese, isToasted, hasExtraCheese, isExtraMeat));
-
-                output.append("\n Premium Toppings:\n");
-                if (sandwich.getPremiumToppings() != null) {
-                    sandwich.getPremiumToppings().forEach(premiumTopping -> output.append(String.format("\t%s\n", premiumTopping)));
-                } else {
-                    output.append("\tN/A\n");
-                }
-
-                output.append("\n Regular Toppings:\n");
-                if (sandwich.getRegularToppings() != null) {
-                    sandwich.getRegularToppings().forEach(regularTopping -> output.append(String.format("\t%s\n", regularTopping)));
-                } else {
-                    output.append("\tN/A\n");
-                }
-
-                output.append("\n Sauces:\n");
-                if (sandwich.getSauces() != null) {
-                    sandwich.getSauces().forEach(sauce -> output.append(String.format("\t%s\n", sauce)));
-                } else {
-                    output.append("\tN/A\n");
-                }
-            }
-        }
-
-        if (!drinks.isEmpty()) {
-            output.append(Utilities.createHeader("Drinks"));
-            String drinkAbbrev = "";
-            for (Drinks drink : drinks) {
-                switch (drink.getSize()) {
-                    case "Small" -> drinkAbbrev = "Sm";
-                    case "Medium" -> drinkAbbrev = "Md";
-                    case "Large" -> drinkAbbrev = "Lg";
-                }
-                subtotal += drink.getPrice();
-                output.append(String.format(" %s drink%-35s$%.2f\n %s\n\n", drinkAbbrev, " ", drink.getPrice(), drink.getType()));
-            }
-        }
-
-        if (chips != 0) {
-            double chipsCost = chips * 1.50;
-            subtotal += chipsCost;
-            output.append((Utilities.createHeader("Chips")));
-            output.append(String.format("""
-                     %d Regular%-34s$%.2f
-                    """, chips, " ", chipsCost));
-        }
-
-        if (!sidesChoice.isEmpty()) {
-            output.append(Utilities.createHeader("Sides"));
-            sidesChoice.forEach(side -> output.append(String.format(" %s\n", side)));
-        }
-
-        output.append("\n-----------------------------------------++--------\n");
-
-        double tax = subtotal * 0.07;
-        double total = tax + subtotal;
-
-        output.append(String.format("""
-                 Subtotal                                || $%.2f
-                 Tax (7%%)                                || $%.2f
-                 Total                                   || $%.2f
-                """, subtotal, tax, total));
-        output.append("-----------------------------------------++--------\n");
-
-
-        // continue printing info about each sandwich, and then each drink, etc.
-        return output.toString();
     }
 }

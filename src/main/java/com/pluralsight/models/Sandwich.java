@@ -5,6 +5,8 @@ import com.pluralsight.Utilities.Utilities;
 import java.util.Set;
 
 public class Sandwich extends Order {
+    private String size;
+    private String type;
     private Set<String> premiumToppingsList;
     private boolean extraMeat = false;
     private Set<String> regularToppingsList;
@@ -20,7 +22,21 @@ public class Sandwich extends Order {
     *
     * */
 
+    public String getSize() {
+        return this.size;
+    }
 
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Set<String> getPremiumToppings() {
         return premiumToppingsList;
@@ -133,6 +149,43 @@ public class Sandwich extends Order {
 
     @Override
     public String toString() {
+        StringBuilder output = new StringBuilder();
+        String isToasted = isToasted() ? "yes" : "no";
+        String hasExtraCheese = hasExtraCheese() ? "yes" : "no";
+        String isExtraMeat = isExtraMeat() ? "yes" : "no";
+        String cheese = getCheese() != null ? getCheese() : "N/A";
+        String sandwichInfo = String.format("Sandwich [%s %s]", getSize(), getType());
+
+        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(String.format("""
+                         Cheese: %s
+                         Toasted: %s | Extra Cheese: %s | Extra Meat: %s
+                        """, cheese, isToasted, hasExtraCheese, isExtraMeat));
+
+        output.append("\n Premium Toppings:\n");
+        if (getPremiumToppings() != null) {
+            getPremiumToppings().forEach(premiumTopping -> output.append(String.format("\t%s\n", premiumTopping)));
+        } else {
+            output.append("\tN/A\n");
+        }
+
+        output.append("\n Regular Toppings:\n");
+        if (getRegularToppings() != null) {
+            getRegularToppings().forEach(regularTopping -> output.append(String.format("\t%s\n", regularTopping)));
+        } else {
+            output.append("\tN/A\n");
+        }
+
+        output.append("\n Sauces:\n");
+        if (getSauces() != null) {
+            getSauces().forEach(sauce -> output.append(String.format("\t%s\n", sauce)));
+        } else {
+            output.append("\tN/A\n");
+        }
+        return output.toString();
+    }
+
+    public String displayCurrentSandwich() {
         return Utilities.centerMessage("Your current sandwich", 45, '-') +
                 "\n\n" +
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +
