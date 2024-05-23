@@ -26,7 +26,7 @@ public class OrderScreen {
                     
                     [1] Sandwich
                     [2] Drinks
-                    [3] Chips
+                    [̶3̶]̶ ̶C̶h̶i̶p̶s̶
                     [4] Sides
                     
                     [f] Finalize order
@@ -55,7 +55,9 @@ public class OrderScreen {
     }
 
     private void addChips() {
-        userOrder.addChipsToOrder();
+//TODO  Just make the chips system a bit more robust.
+        System.out.println("Sorry, we are currently out of chips!");
+        //userOrder.addChipsToOrder();
     }
 
     private void orderSides() {

@@ -99,6 +99,8 @@ public class CreateSandwichScreen{
                         isRunning = false;
                     } else {
                         System.out.println("Sorry, it seems that you haven't chosen the required items (sandwich size / sandwich type)\nPlease select one of each to finalize your sandwich.");
+                        System.out.print("Press ENTER to continue...");
+                        Inputs.awaitInput();
                     }
                 }
                 case "X", "x" -> isRunning = false;
@@ -167,7 +169,7 @@ public class CreateSandwichScreen{
         while (isChoosingToppings) {
             Utilities.clearConsole();
             System.out.println(Utilities.centerMessage("Choosing toppings", 50, '='));
-            System.out.print("\n");
+            System.out.printf("Current Toppings: %s\n\n", !chosenToppings.isEmpty() ? chosenToppings : "N/A");
             System.out.println("Please choose which toppings to add:");
             toppings.forEach((number, topping) -> System.out.printf("[%d] %s\n", number, topping));
             System.out.print("""
@@ -193,7 +195,7 @@ public class CreateSandwichScreen{
                                 
                                 """, type);
                         chosenToppings.forEach(System.out::println);
-                        System.out.print("Is this correct? (Y/N): ");
+                        System.out.print("\nIs this correct? (Y/N): ");
                         String accepted = Inputs.getString();
                         switch (accepted) {
                             case "y", "Y" -> {
