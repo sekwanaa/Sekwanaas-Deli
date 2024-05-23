@@ -2,9 +2,7 @@ package com.pluralsight.models;
 
 import com.pluralsight.Utilities.Utilities;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class Sandwich extends Order {
     private Set<String> premiumToppingsList;
@@ -14,41 +12,6 @@ public class Sandwich extends Order {
     private boolean extraCheese = false;
     private Set<String> saucesList;
     private boolean toasted = false;
-
-
-    public static final Map<Integer, String> premiumToppings = new TreeMap<>(Map.of(
-            1, "Steak",
-            2, "Ham",
-            3, "Salami",
-            4, "Roast Beef",
-            5, "Chicken",
-            6, "Bacon"
-    ));
-    public static final Map<Integer, String> regularToppings = new TreeMap<>(Map.of(
-            1, "Lettuce",
-            2, "Peppers",
-            3, "Onions",
-            4, "Tomatoes",
-            5, "Jalapenos",
-            6, "Cucumbers",
-            7, "Pickles",
-            8, "Guacamole",
-            9, "Mushrooms"
-    ));
-    public static final Map<Integer, String> cheeses = new TreeMap<>(Map.of(
-            1, "American",
-            2, "Provolone",
-            3, "Cheddar",
-            4, "Swiss"
-    ));
-    public static final Map<Integer, String> sauces = new TreeMap<>(Map.of(
-            1, "Mayo",
-            2, "Mustard",
-            3, "Ketchup",
-            4, "Ranch",
-            5, "Thousand Islands",
-            6, "Vinaigrette"
-    ));
 
 
     /*
