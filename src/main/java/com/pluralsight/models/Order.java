@@ -7,13 +7,13 @@ import java.util.*;
 public class Order {
     private final List<Sandwich> sandwiches;
     private final List<Drinks> drinks;
-    int chips;
+    private final List<Chips> chips;
     private final Set<String> sidesList;
 
     public Order() {
         this.sandwiches = new ArrayList<>();
         this.drinks = new ArrayList<>();
-        this.chips = 0;
+        this.chips = new ArrayList<>();
         this.sidesList = new HashSet<>();
     }
 
@@ -64,6 +64,13 @@ public class Order {
             5, "Fanta",
             6, "Lemonade"
     ));
+    public final Map<Integer, String> chipsList = new TreeMap<>(Map.of(
+            1, "Kettle Cooked Jalapeno",
+            2, "Lays Classic",
+            3, "Cheetos",
+            4, "Doritos Cool Ranch",
+            5, "Doritos Nacho Cheese"
+    ));
 
 
     //Methods
@@ -75,8 +82,8 @@ public class Order {
         drinks.add(drink);
     }
 
-    public void addChipsToOrder() {
-        chips++;
+    public void addChipsToOrder(Chips chip) {
+        chips.add(chip);
     }
 
     public void addSideToOrder(String side) {
@@ -97,7 +104,7 @@ public class Order {
         return sidesList;
     }
 
-    public int getChips() {
+    public List<Chips> getChips() {
         return chips;
     }
 
@@ -130,13 +137,15 @@ public class Order {
             }
         }
 
-        if (this.chips != 0) {
-            double chipsCost = chips * 1.50;
-            subtotal += chipsCost;
+        if (!this.chips.isEmpty()) {
             output.append((Utilities.createHeader("Chips")));
-            output.append(String.format("""
-                     %d Regular%-34s$%.2f
-                    """, chips, " ", chipsCost));
+            for (Chips chips : chips) {
+                double chipsCost = chips.getPrice();
+                subtotal += chipsCost;
+                output.append(String.format("""
+                     %-22s%-21s$%.2f
+                    """, chips.getName(), " ", chipsCost));
+            }
         }
 
         if (!this.sidesList.isEmpty()) {

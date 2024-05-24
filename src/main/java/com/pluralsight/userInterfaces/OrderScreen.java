@@ -2,6 +2,7 @@ package com.pluralsight.userInterfaces;
 
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.models.Chips;
 import com.pluralsight.models.Drinks;
 import com.pluralsight.models.Order;
 import com.pluralsight.DataManagers.ReceiptManager;
@@ -55,9 +56,14 @@ public class OrderScreen {
     }
 
     private void addChips() {
-//TODO  Just make the chips system a bit more robust.
-        System.out.println("Sorry, we are currently out of chips!");
-        //userOrder.addChipsToOrder();
+        Utilities.clearConsole();
+        System.out.println(Utilities.centerMessage("Choosing chips", 50, '='));
+        System.out.print("\n");
+        userOrder.chipsList.forEach((number, chip) -> System.out.printf("[%d] %s\n", number, chip));
+        System.out.println("\n[x] Cancel sides choice");
+        System.out.print("Enter choice: ");
+
+        processChipsMenuChoice();
     }
 
     private void orderSides() {
@@ -174,6 +180,22 @@ public class OrderScreen {
                 System.out.println();
             } else {
                 System.out.println("This is not a valid command, please try again.");
+            }
+        }
+    }
+
+    private void processChipsMenuChoice() {
+        String userChoice = Inputs.getString();
+        try {
+            int userSidesChoice = Integer.parseInt(userChoice);
+            Chips chip = new Chips();
+            chip.setName(userOrder.chipsList.get(userSidesChoice));
+            userOrder.addChipsToOrder(chip);
+        } catch (NumberFormatException e) {
+            if (userChoice.equalsIgnoreCase("x")) {
+                System.out.println();
+            } else {
+                System.out.println("This was not a valid sides choice. Please try again...");
             }
         }
     }
