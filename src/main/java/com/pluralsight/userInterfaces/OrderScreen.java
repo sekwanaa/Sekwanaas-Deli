@@ -1,10 +1,7 @@
 package com.pluralsight.userInterfaces;
 
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.Utilities.Utilities;
-import com.pluralsight.models.Chips;
-import com.pluralsight.models.Drinks;
-import com.pluralsight.models.Order;
+import com.pluralsight.Utilities.*;
+import com.pluralsight.models.*;
 import com.pluralsight.DataManagers.ReceiptManager;
 
 public class OrderScreen {
@@ -27,7 +24,7 @@ public class OrderScreen {
                     
                     [1] Sandwich
                     [2] Drinks
-                    [̶3̶]̶ ̶C̶h̶i̶p̶s̶
+                    [3] Chips
                     [4] Sides
                     
                     [f] Finalize order
@@ -86,20 +83,16 @@ public class OrderScreen {
             int userChoice = Integer.parseInt(orderMenuChoice);
             switch (userChoice) {
                 case 1:
-                    // go to createSandwich interface since it's complicated
                     CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
                     createSandwichScreen.sandwichCreationScreen();
                     break;
                 case 2:
-                    // let users choose drink size
                     orderDrink();
                     break;
                 case 3:
-                    // let users add chips if they want
                     addChips();
                     break;
                 case 4:
-                    // let users add sides if they want (use a set so they can only get one unique side)
                     orderSides();
                     break;
                 default:
@@ -174,7 +167,7 @@ public class OrderScreen {
             System.out.print("\nEnter choice: ");
             int drinkTypeChoice = Inputs.getInt();
             drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
-            userOrder.addDrinkToOrder(drink);
+            userOrder.addDrink(drink);
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -190,7 +183,7 @@ public class OrderScreen {
             int userSidesChoice = Integer.parseInt(userChoice);
             Chips chip = new Chips();
             chip.setName(userOrder.chipsList.get(userSidesChoice));
-            userOrder.addChipsToOrder(chip);
+            userOrder.addChips(chip);
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -203,8 +196,11 @@ public class OrderScreen {
     private void processSidesMenuChoice() {
         String userChoice = Inputs.getString();
         try {
+            Sides side = new Sides();
             int userSidesChoice = Integer.parseInt(userChoice);
-            userOrder.addSideToOrder(userOrder.sides.get(userSidesChoice));
+
+            side.setName(userOrder.sides.get(userSidesChoice));
+            userOrder.addSide(side);
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();

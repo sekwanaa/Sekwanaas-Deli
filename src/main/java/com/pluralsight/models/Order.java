@@ -5,10 +5,10 @@ import com.pluralsight.Utilities.Utilities;
 import java.util.*;
 
 public class Order {
-    private final List<Sandwich> sandwiches;
-    private final List<Drinks> drinks;
-    private final List<Chips> chips;
-    private final Set<String> sidesList;
+    protected final List<Sandwich> sandwiches;
+    protected final List<Drinks> drinks;
+    protected final List<Chips> chips;
+    protected final Set<Sides> sidesList;
 
     public Order() {
         this.sandwiches = new ArrayList<>();
@@ -74,19 +74,20 @@ public class Order {
 
 
     //Methods
-    public void addSandwichToOrder(Sandwich sandwich) {
+
+    public void addSandwich(Sandwich sandwich) {
         sandwiches.add(sandwich );
     }
 
-    public void addDrinkToOrder(Drinks drink) {
+    public void addDrink(Drinks drink) {
         drinks.add(drink);
     }
 
-    public void addChipsToOrder(Chips chip) {
+    public void addChips(Chips chip) {
         chips.add(chip);
     }
 
-    public void addSideToOrder(String side) {
+    public void addSide(Sides side) {
         sidesList.add(side);
     }
 
@@ -100,7 +101,7 @@ public class Order {
         return sandwiches;
     }
 
-    public Set<String> getSidesList() {
+    public Set<Sides> getSidesList() {
         return sidesList;
     }
 
@@ -150,7 +151,7 @@ public class Order {
 
         if (!this.sidesList.isEmpty()) {
             output.append(Utilities.createHeader("Sides"));
-            sidesList.forEach(side -> output.append(String.format(" %s\n", side)));
+            sidesList.forEach(side -> output.append(String.format(" %s\n", side.getName())));
         }
 
         output.append("\n-----------------------------------------++--------\n");

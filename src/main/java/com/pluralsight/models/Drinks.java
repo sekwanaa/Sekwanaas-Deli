@@ -1,6 +1,6 @@
 package com.pluralsight.models;
 
-public class Drinks extends Order {
+public class Drinks {
     private String brand;
     private String size;
     private double price;

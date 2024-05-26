@@ -95,7 +95,7 @@ public class CreateSandwichScreen{
                                 userSandwich.setExtraMeat(true);
                             }
                         }
-                        userOrder.addSandwichToOrder(userSandwich);
+                        userOrder.addSandwich(userSandwich);
                         isRunning = false;
                     } else {
                         System.out.println("Sorry, it seems that you haven't chosen the required items (sandwich size / sandwich type)\nPlease select one of each to finalize your sandwich.");
@@ -116,7 +116,7 @@ public class CreateSandwichScreen{
         Utilities.clearConsole();
         System.out.println(Utilities.centerMessage("Choosing Bread Size", 50, '='));
         System.out.print("\n");
-
+//TODO  Need to fix this ??? idk whats wrong.
         System.out.print("""
                 [1] 4" (price)
                 [2] 6" (price)
