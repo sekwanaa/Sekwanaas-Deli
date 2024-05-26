@@ -1,6 +1,9 @@
 package com.pluralsight.userInterfaces;
 
+import com.pluralsight.DataManagers.ReceiptManager;
 import com.pluralsight.Utilities.Inputs;
+
+import java.util.*;
 
 public class HomeScreen {
 
@@ -10,10 +13,11 @@ public class HomeScreen {
         System.out.print("""
                 
                 [1] Create a new order
+                [2] View receipts (Admin Only)
+                
                 [0] Exit
                 
                 Enter choice:\s""");
-        System.out.print("Enter choice: ");
 
         processHomeScreenChoice();
     }
@@ -30,6 +34,16 @@ public class HomeScreen {
             case 1 -> {
                 OrderScreen userOrder = new OrderScreen();
                 userOrder.homeScreen();
+            }
+            case 2 -> {
+                List<String> receipts = ReceiptManager.getAllReceipts();
+                if (receipts == null) {
+                    System.out.println("You didn't enter the correct password.");
+                } else {
+                    receipts.forEach(System.out::println);
+                }
+                Inputs.awaitInput();
+                displayHomeScreen();
             }
             case 0 -> System.exit(0);
             default -> {

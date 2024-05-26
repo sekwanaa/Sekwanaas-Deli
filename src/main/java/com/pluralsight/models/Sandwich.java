@@ -4,7 +4,7 @@ import com.pluralsight.Utilities.Utilities;
 
 import java.util.Set;
 
-public class Sandwich extends Order {
+public class Sandwich {
     private String size;
     private String type;
     private Set<String> premiumToppingsList;
@@ -15,6 +15,57 @@ public class Sandwich extends Order {
     private Set<String> saucesList;
     private boolean toasted = false;
 
+    public double getPrice() {
+        double finalPrice = 0;
+        double premiumToppingCharge = 0;
+        double extraMeatCharge = 0;
+        double cheeseCharge = 0;
+        double extraCheeseCharge = 0;
+        if (getSize() != null) {
+            switch (getSize()) {
+                case "4\"" -> {
+                    finalPrice += 5.50;
+                    premiumToppingCharge = 1.00;
+                    extraMeatCharge = .50;
+                    cheeseCharge = .75;
+                    extraCheeseCharge = .30;
+                }
+                case "8\"" -> {
+                    finalPrice += 7.00;
+                    premiumToppingCharge = 2.00;
+                    extraMeatCharge = 1.00;
+                    cheeseCharge = 1.50;
+                    extraCheeseCharge = .60;
+                }
+                case "12\"" -> {
+                    finalPrice += 8.50;
+                    premiumToppingCharge = 3.00;
+                    extraMeatCharge = 1.50;
+                    cheeseCharge = 2.25;
+                    extraCheeseCharge = .90;
+                }
+            }
+        }
+        if (premiumToppingsList != null) {
+            for (String ignored : premiumToppingsList) {
+                finalPrice += premiumToppingCharge;
+            }
+        }
+
+        if (cheese != null && !cheese.isEmpty()) {
+            finalPrice += cheeseCharge;
+        }
+
+        if (extraMeat) {
+            finalPrice += extraMeatCharge;
+        }
+
+        if (extraCheese) {
+            finalPrice += extraCheeseCharge;
+        }
+
+        return finalPrice;
+    }
 
     /*
     *
@@ -92,58 +143,6 @@ public class Sandwich extends Order {
 
     public void setToasted(boolean toasted) {
         this.toasted = toasted;
-    }
-
-    public double getPrice() {
-        double finalPrice = 0;
-        double premiumToppingCharge = 0;
-        double extraMeatCharge = 0;
-        double cheeseCharge = 0;
-        double extraCheeseCharge = 0;
-        if (getSize() != null) {
-            switch (getSize()) {
-                case "4\"" -> {
-                    finalPrice += 5.50;
-                    premiumToppingCharge = 1.00;
-                    extraMeatCharge = .50;
-                    cheeseCharge = .75;
-                    extraCheeseCharge = .30;
-                }
-                case "8\"" -> {
-                    finalPrice += 7.00;
-                    premiumToppingCharge = 2.00;
-                    extraMeatCharge = 1.00;
-                    cheeseCharge = 1.50;
-                    extraCheeseCharge = .60;
-                }
-                case "12\"" -> {
-                    finalPrice += 8.50;
-                    premiumToppingCharge = 3.00;
-                    extraMeatCharge = 1.50;
-                    cheeseCharge = 2.25;
-                    extraCheeseCharge = .90;
-                }
-            }
-        }
-        if (premiumToppingsList != null) {
-            for (String ignored : premiumToppingsList) {
-                finalPrice += premiumToppingCharge;
-            }
-        }
-
-        if (cheese != null && !cheese.isEmpty()) {
-            finalPrice += cheeseCharge;
-        }
-
-        if (extraMeat) {
-            finalPrice += extraMeatCharge;
-        }
-
-        if (extraCheese) {
-            finalPrice += extraCheeseCharge;
-        }
-
-        return finalPrice;
     }
 
 

@@ -1,9 +1,7 @@
 package com.pluralsight.userInterfaces;
 
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.Utilities.Utilities;
-import com.pluralsight.models.Drinks;
-import com.pluralsight.models.Order;
+import com.pluralsight.Utilities.*;
+import com.pluralsight.models.*;
 import com.pluralsight.DataManagers.ReceiptManager;
 
 public class OrderScreen {
@@ -55,7 +53,14 @@ public class OrderScreen {
     }
 
     private void addChips() {
-        userOrder.addChipsToOrder();
+        Utilities.clearConsole();
+        System.out.println(Utilities.centerMessage("Choosing chips", 50, '='));
+        System.out.print("\n");
+        userOrder.chipsList.forEach((number, chip) -> System.out.printf("[%d] %s\n", number, chip));
+        System.out.println("\n[x] Cancel sides choice");
+        System.out.print("Enter choice: ");
+
+        processChipsMenuChoice();
     }
 
     private void orderSides() {
@@ -78,24 +83,20 @@ public class OrderScreen {
             int userChoice = Integer.parseInt(orderMenuChoice);
             switch (userChoice) {
                 case 1:
-                    // go to createSandwich interface since it's complicated
                     CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
                     createSandwichScreen.sandwichCreationScreen();
                     break;
                 case 2:
-                    // let users choose drink size
                     orderDrink();
                     break;
                 case 3:
-                    // let users add chips if they want
                     addChips();
                     break;
                 case 4:
-                    // let users add sides if they want (use a set so they can only get one unique side)
                     orderSides();
                     break;
                 default:
-                    System.out.print("This is not a valid choice, press ENTER try again.");
+                    System.out.println("This is not a valid choice");
                     Inputs.awaitInput();
                     break;
             }
@@ -112,19 +113,23 @@ public class OrderScreen {
                         case "Y", "y":
                             ReceiptManager.createReceipt(userOrder.toString());
                             currentlyOrdering = false;
+                            HomeScreen.displayHomeScreen();
                             break;
                         case "N", "n":
                             break;
                         default:
-                            System.out.print("That's not a valid option, press ENTER to try again...");
+                            System.out.println("That's not a valid option.");
                             Inputs.awaitInput();
                             break;
                     }
 
                 }
-                case "X", "x" -> currentlyOrdering = false;
+                case "X", "x" -> {
+                    currentlyOrdering = false;
+                    HomeScreen.displayHomeScreen();
+                }
                 default -> {
-                    System.out.print("This is not a valid choice, press ENTER try again.");
+                    System.out.print("This is not a valid choice.");
                     Inputs.awaitInput();
                 }
             }
@@ -165,7 +170,7 @@ public class OrderScreen {
             System.out.print("\nEnter choice: ");
             int drinkTypeChoice = Inputs.getInt();
             drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
-            userOrder.addDrinkToOrder(drink);
+            userOrder.addDrink(drink);
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -175,11 +180,30 @@ public class OrderScreen {
         }
     }
 
-    private void processSidesMenuChoice() {
+    private void processChipsMenuChoice() {
         String userChoice = Inputs.getString();
         try {
             int userSidesChoice = Integer.parseInt(userChoice);
-            userOrder.addSideToOrder(userOrder.sides.get(userSidesChoice));
+            Chips chip = new Chips();
+            chip.setName(userOrder.chipsList.get(userSidesChoice));
+            userOrder.addChips(chip);
+        } catch (NumberFormatException e) {
+            if (userChoice.equalsIgnoreCase("x")) {
+                System.out.println();
+            } else {
+                System.out.println("This was not a valid sides choice. Please try again...");
+            }
+        }
+    }
+
+    private void processSidesMenuChoice() {
+        String userChoice = Inputs.getString();
+        try {
+            Sides side = new Sides();
+            int userSidesChoice = Integer.parseInt(userChoice);
+
+            side.setName(userOrder.sides.get(userSidesChoice));
+            userOrder.addSide(side);
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
