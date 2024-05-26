@@ -111,7 +111,6 @@ public class OrderScreen {
 
                     switch (orderFinished) {
                         case "Y", "y":
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + userOrder);
                             ReceiptManager.createReceipt(userOrder.toString());
                             currentlyOrdering = false;
                             HomeScreen.displayHomeScreen();
@@ -212,5 +211,9 @@ public class OrderScreen {
                 System.out.println("This was not a valid sides choice. Please try again...");
             }
         }
+    }
+
+    public Order getUserOrder() {
+        return this.userOrder;
     }
 }
