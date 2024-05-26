@@ -58,6 +58,7 @@ public class Inputs {
 
     public static void awaitInput() {
         ensureScannerIsOpen();
+        System.out.print("\nPress ENTER to continue...");
         scanner.nextLine();
     }
 }

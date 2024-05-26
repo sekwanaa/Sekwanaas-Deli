@@ -99,7 +99,6 @@ public class CreateSandwichScreen{
                         isRunning = false;
                     } else {
                         System.out.println("Sorry, it seems that you haven't chosen the required items (sandwich size / sandwich type)\nPlease select one of each to finalize your sandwich.");
-                        System.out.print("Press ENTER to continue...");
                         Inputs.awaitInput();
                     }
                 }

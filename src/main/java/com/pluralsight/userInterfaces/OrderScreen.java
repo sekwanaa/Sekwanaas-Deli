@@ -96,7 +96,7 @@ public class OrderScreen {
                     orderSides();
                     break;
                 default:
-                    System.out.print("This is not a valid choice, press ENTER try again.");
+                    System.out.println("This is not a valid choice");
                     Inputs.awaitInput();
                     break;
             }
@@ -105,28 +105,32 @@ public class OrderScreen {
                 case "F", "f" -> {
                     // add items to receipt and finalize the order
                     Utilities.clearConsole();
-                    System.out.println(this);
+                    System.out.println(userOrder);
                     System.out.print("\n\n\n\nIs the order correct? (Y/N): ");
                     String orderFinished = Inputs.getString();
 
                     switch (orderFinished) {
                         case "Y", "y":
-                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + this);
-                            ReceiptManager.createReceipt(this.toString());
+                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + userOrder);
+                            ReceiptManager.createReceipt(userOrder.toString());
                             currentlyOrdering = false;
+                            HomeScreen.displayHomeScreen();
                             break;
                         case "N", "n":
                             break;
                         default:
-                            System.out.print("That's not a valid option, press ENTER to try again...");
+                            System.out.println("That's not a valid option.");
                             Inputs.awaitInput();
                             break;
                     }
 
                 }
-                case "X", "x" -> currentlyOrdering = false;
+                case "X", "x" -> {
+                    currentlyOrdering = false;
+                    HomeScreen.displayHomeScreen();
+                }
                 default -> {
-                    System.out.print("This is not a valid choice, press ENTER try again.");
+                    System.out.print("This is not a valid choice.");
                     Inputs.awaitInput();
                 }
             }
