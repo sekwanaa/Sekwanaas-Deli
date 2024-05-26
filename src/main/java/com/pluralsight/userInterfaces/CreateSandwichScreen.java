@@ -193,7 +193,7 @@ public class CreateSandwichScreen{
                                 Summary of %s toppings:
                                 
                                 """, type);
-                        chosenToppings.forEach(System.out::println);
+                        displaySummary(chosenToppings);
                         System.out.print("\nIs this correct? (Y/N): ");
                         String accepted = Inputs.getString();
                         switch (accepted) {
@@ -260,6 +260,7 @@ public class CreateSandwichScreen{
         while (isChoosingSauces) {
             Utilities.clearConsole();
             System.out.println(Utilities.centerMessage("Choosing sauces", 50, '='));
+            System.out.printf("Current Sauces: %s\n\n", !chosenSauces.isEmpty() ? chosenSauces : "N/A");
             System.out.print("\n");
             System.out.println("Please choose which toppings to add:");
             sauces.forEach((number, sauce) -> System.out.printf("[%d] %s\n", number, sauce));
@@ -281,10 +282,10 @@ public class CreateSandwichScreen{
                 }
             } catch (NumberFormatException e) {
                 if (userChoice.equalsIgnoreCase("d")) {
-                    System.out.println("\nSummary of sauces:");
+                    System.out.println("\nSummary of sauces:\n");
 
-                    chosenSauces.forEach(System.out::println);
-                    System.out.print("Is this correct? (Y/N): ");
+                    displaySummary(chosenSauces);
+                    System.out.print("\nIs this correct? (Y/N): ");
                     String accepted = Inputs.getString();
                     switch (accepted) {
                         case "y", "Y" -> {
@@ -298,6 +299,10 @@ public class CreateSandwichScreen{
                 }
             }
         }
+    }
+
+    private void displaySummary(Set<String> chosenItems) {
+        chosenItems.forEach(System.out::println);
     }
 
 
