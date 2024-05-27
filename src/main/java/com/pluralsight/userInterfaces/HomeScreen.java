@@ -8,9 +8,11 @@ import java.util.*;
 public class HomeScreen {
 
     public static void displayHomeScreen() {
-        displayWelcomeMessage();
+        boolean usingApplication = true;
+        while (usingApplication) {
+            displayWelcomeMessage();
 
-        System.out.print("""
+            System.out.print("""
                 
                 [1] Create a new order
                 [2] View receipts (Admin Only)
@@ -19,7 +21,8 @@ public class HomeScreen {
                 
                 Enter choice:\s""");
 
-        processHomeScreenChoice();
+            usingApplication = processHomeScreenChoice();
+        }
     }
 
     private static void displayWelcomeMessage() {
@@ -27,7 +30,7 @@ public class HomeScreen {
         System.out.println("What can we do for you today?");
     }
 
-    private static void processHomeScreenChoice() {
+    private static boolean processHomeScreenChoice() {
         int userChoice = Inputs.getInt();
 
         switch (userChoice) {
@@ -43,13 +46,15 @@ public class HomeScreen {
                     receipts.forEach(System.out::println);
                 }
                 Inputs.awaitInput();
-                displayHomeScreen();
             }
-            case 0 -> System.exit(0);
+            case 0 -> {
+                return false;
+            }
             default -> {
                 System.out.println("That's not a valid choice, please try again...");
-                processHomeScreenChoice();
+                Inputs.awaitInput();
             }
         }
+        return true;
     }
 }
