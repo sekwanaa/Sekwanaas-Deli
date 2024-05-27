@@ -2,7 +2,9 @@ package com.pluralsight.userInterfaces;
 
 import com.pluralsight.Utilities.Inputs;
 import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.models.BLT;
 import com.pluralsight.models.Order;
+import com.pluralsight.models.PhillyCheeseSteak;
 import com.pluralsight.models.Sandwich;
 
 import java.util.*;
@@ -16,7 +18,24 @@ public class CreateSandwichScreen{
 
     //Methods
 
-    public void sandwichCreationScreen() {
+    //DISPLAYING MENU CHOICES
+
+    public void sandwichCreationHomeScreen() {
+            Utilities.clearConsole();
+            System.out.println(Utilities.centerMessage("Choose an option", 45, '-'));
+            System.out.print("""
+                    
+                    [1] Create custom sandwich
+                    [2] Choose a signature sandwich
+                    
+                    [x] Cancel sandwich
+                    
+                    Enter choice:\s""");
+
+            processSandwichHomeScreenMenuChoice();
+    }
+
+    public void customSandwichCreationScreen() {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
@@ -37,11 +56,77 @@ public class CreateSandwichScreen{
                     
                     Enter choice:\s""");
 
-            isRunning = processSandwichCreationMenuChoice(userSandwich, isRunning);
+            isRunning = processCustomSandwichCreationMenuChoice(userSandwich, isRunning);
         }
     }
 
-    private boolean processSandwichCreationMenuChoice(Sandwich userSandwich, boolean isRunning) {
+    public void customSandwichCreationScreen(Sandwich userSandwich) {
+        boolean isRunning = true;
+        while (isRunning) {
+            Utilities.clearConsole();
+            System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
+            System.out.println(Utilities.centerMessage("Customize your sandwich", 45, '-'));
+            System.out.print("""
+                    
+                    [1] Choose bread size
+                    [2] Choose bread type
+                    [3] Choose meats (extra charge)
+                    [4] Choose regular toppings
+                    [5] Choose cheese (only 1 cheese allowed)
+                    [6] Choose sauces
+                    
+                    [f] Finalize sandwich
+                    [x] Cancel sandwich
+                    
+                    Enter choice:\s""");
+
+            isRunning = processCustomSandwichCreationMenuChoice(userSandwich, isRunning);
+        }
+    }
+
+    private void chooseSignatureSandwichScreen() {
+            Utilities.clearConsole();
+            System.out.println("""
+                Which signature sandwich would you like?
+                
+                [1] BLT
+                [2] Philly Cheese Steak
+                
+                [x] Cancel signature sandwich
+                
+                Enter choice:\s""");
+
+            processSignatureSandwichMenuChoice();
+    }
+
+
+    //PROCESSING MENU CHOICES
+    private void processSandwichHomeScreenMenuChoice() {
+        String userChoice = Inputs.getString();
+
+        try {
+            int userIntChoice = Integer.parseInt(userChoice);
+            switch (userIntChoice) {
+                case 1:
+                    customSandwichCreationScreen();
+                    break;
+                case 2:
+                    chooseSignatureSandwichScreen();
+                    break;
+                default:
+                    System.out.println("This is not a valid choice, please try again.");
+                    Inputs.awaitInput();
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            switch (userChoice) {
+                case "X", "x" -> System.out.println();
+                default -> System.out.println("This is not a valid choice, please try again.");
+            }
+        }
+    }
+
+    private boolean processCustomSandwichCreationMenuChoice(Sandwich userSandwich, boolean isRunning) {
         String userChoice = Inputs.getString();
 
         try {
@@ -110,6 +195,40 @@ public class CreateSandwichScreen{
         return isRunning;
     }
 
+    private void processSignatureSandwichMenuChoice() {
+        String userChoice = Inputs.getString();
+
+        try {
+            int userIntChoice = Integer.parseInt(userChoice);
+
+            Sandwich sandwich = null;
+
+            switch (userIntChoice) {
+                case 1:
+                    sandwich = new BLT();
+                    System.out.println(sandwich.displayCurrentSandwich());
+                    break;
+                case 2:
+                    sandwich = new PhillyCheeseSteak();
+                    System.out.println(sandwich.displayCurrentSandwich());
+                    break;
+                default:
+                    System.out.println("That's not a valid choice");
+                    Inputs.awaitInput();
+                    break;
+            }
+
+            if (sandwich != null) {
+                System.out.print("Would you like to edit your sandwich? (Y/N): ");
+                String editSandwich = Inputs.getString();
+                if (editSandwich.equalsIgnoreCase("y")) customSandwichCreationScreen(sandwich);
+                else userOrder.addSandwich(sandwich);
+            }
+        } catch (NumberFormatException e) {
+            if (userChoice.equalsIgnoreCase("x")) System.out.println();
+        }
+    }
+
 
     private void chooseBreadSize(Sandwich userSandwich) {
         Utilities.clearConsole();
@@ -117,9 +236,9 @@ public class CreateSandwichScreen{
         System.out.print("\n");
 //TODO  Need to fix this ??? idk whats wrong.
         System.out.print("""
-                [1] 4" (price)
-                [2] 6" (price)
-                [3] 8" (price)
+                [1] 4" ($5.50)
+                [2] 8" ($7.00)
+                [3] 12" ($8.50)
                 
                 Enter choice:\s""");
         int breadSizeChoice = Inputs.getInt();
@@ -162,7 +281,7 @@ public class CreateSandwichScreen{
 
     private void chooseToppings(Sandwich userSandwich, String type) {
         Map<Integer, String> toppings = type.equals("premium") ? userOrder.premiumToppings : userOrder.regularToppings;
-        Set<String> chosenToppings = new HashSet<>();
+        Set<String> chosenToppings = checkIfHasToppings(userSandwich, type);
 
         boolean isChoosingToppings = true;
         while (isChoosingToppings) {
@@ -255,7 +374,7 @@ public class CreateSandwichScreen{
 
     private void chooseSauces(Sandwich userSandwich) {
         Map<Integer, String> sauces = userOrder.sauces;
-        Set<String> chosenSauces = new HashSet<>();
+        Set<String> chosenSauces = checkIfHasSauces(userSandwich);
         boolean isChoosingSauces = true;
         while (isChoosingSauces) {
             Utilities.clearConsole();
@@ -299,6 +418,21 @@ public class CreateSandwichScreen{
                 }
             }
         }
+    }
+
+    private static Set<String> checkIfHasToppings(Sandwich userSandwich, String type) {
+        Set<String> chosenToppings;
+        if (type.equalsIgnoreCase("premium") && !userSandwich.getPremiumToppings().isEmpty()) chosenToppings = userSandwich.getPremiumToppings();
+        else if (type.equalsIgnoreCase("regular") && !userSandwich.getRegularToppings().isEmpty()) chosenToppings = userSandwich.getRegularToppings();
+        else chosenToppings = new HashSet<>();
+        return chosenToppings;
+    }
+
+    private Set<String> checkIfHasSauces(Sandwich userSandwich) {
+        Set<String> sauces;
+        if (!userSandwich.getSauces().isEmpty()) sauces = userSandwich.getSauces();
+        else sauces = new HashSet<>();
+        return sauces;
     }
 
     private void displaySummary(Set<String> chosenItems) {

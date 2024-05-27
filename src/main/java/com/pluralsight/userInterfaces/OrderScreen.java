@@ -4,6 +4,8 @@ import com.pluralsight.Utilities.*;
 import com.pluralsight.models.*;
 import com.pluralsight.DataManagers.ReceiptManager;
 
+import java.util.Map;
+
 public class OrderScreen {
     private final Order userOrder;
 
@@ -32,13 +34,15 @@ public class OrderScreen {
                     
                     Enter choice:\s""");
 
-            currentlyOrdering = processOrderMenuChoice(currentlyOrdering);
+            currentlyOrdering = processOrderMenuChoice();
         }
     }
 
     private void orderDrink() {
-        Utilities.clearConsole();
-        System.out.print("""
+        boolean isChoosingDrinks = true;
+        while (isChoosingDrinks) {
+            Utilities.clearConsole();
+            System.out.print("""
                 What size fountain drink would you like?
                 
                 [1] Small
@@ -49,7 +53,8 @@ public class OrderScreen {
                 
                 Enter choice:\s""");
 
-        processDrinkMenuChoice();
+            isChoosingDrinks = processDrinkMenuChoice(isChoosingDrinks);
+        }
     }
 
     private void addChips() {
@@ -76,7 +81,7 @@ public class OrderScreen {
 
     //Processing Menu Choices
 
-    private boolean processOrderMenuChoice(boolean currentlyOrdering) {
+    private boolean processOrderMenuChoice() {
         String orderMenuChoice = Inputs.getString();
 
         try {
@@ -84,7 +89,7 @@ public class OrderScreen {
             switch (userChoice) {
                 case 1:
                     CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
-                    createSandwichScreen.sandwichCreationScreen();
+                    createSandwichScreen.sandwichCreationHomeScreen();
                     break;
                 case 2:
                     orderDrink();
@@ -112,9 +117,8 @@ public class OrderScreen {
                     switch (orderFinished) {
                         case "Y", "y":
                             ReceiptManager.createReceipt(userOrder.toString());
-                            currentlyOrdering = false;
-                            HomeScreen.displayHomeScreen();
-                            break;
+                            return false;
+//                            HomeScreen.displayHomeScreen();
                         case "N", "n":
                             break;
                         default:
@@ -125,8 +129,8 @@ public class OrderScreen {
 
                 }
                 case "X", "x" -> {
-                    currentlyOrdering = false;
-                    HomeScreen.displayHomeScreen();
+                    return false;
+//                    HomeScreen.displayHomeScreen();
                 }
                 default -> {
                     System.out.print("This is not a valid choice.");
@@ -134,59 +138,73 @@ public class OrderScreen {
                 }
             }
         }
-        return currentlyOrdering;
+        return true;
     }
 
-    private void processDrinkMenuChoice() {
+    private boolean processDrinkMenuChoice(boolean isChoosingDrinks) {
         String userChoice = Inputs.getString();
 
         try {
             Drinks drink = new Drinks();
             int drinkChoice = Integer.parseInt(userChoice);
             String size = "";
-            double price = switch (drinkChoice) {
+            double price = 0;
+
+            if (drinkChoice < 0 || drinkChoice > 3) {
+                System.out.println("That's not a valid choice.");
+                Inputs.awaitInput();
+                return true;
+            }
+
+            switch (drinkChoice) {
                 case 1 -> {
                     size = "Small";
-                    yield 2.00;
+                    price = 2.00;
                 }
                 case 2 -> {
                     size = "Medium";
-                    yield 2.50;
+                    price = 2.50;
                 }
                 case 3 -> {
                     size = "Large";
-                    yield 3.00;
+                    price = 3.00;
                 }
-                default -> 0;
-            };
+            }
             drink.setSize(size);
             drink.setPrice(price);
             Utilities.clearConsole();
             System.out.println("""
-                    
-                    What drink would you like?
-                    """);
+                
+                What drink would you like?
+                """);
             userOrder.drinksList.forEach((num, d) -> System.out.printf("[%d] %s\n", num, d));
             System.out.print("\nEnter choice: ");
             int drinkTypeChoice = Inputs.getInt();
-            drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
-            userOrder.addDrink(drink);
+
+            if (validateUserChoice(drinkTypeChoice, userOrder.drinksList)) {
+                drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
+                userOrder.addDrink(drink);
+                isChoosingDrinks = false;
+            }
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
-                System.out.println();
+                isChoosingDrinks = false;
             } else {
                 System.out.println("This is not a valid command, please try again.");
             }
         }
+        return isChoosingDrinks;
     }
 
     private void processChipsMenuChoice() {
         String userChoice = Inputs.getString();
         try {
             int userSidesChoice = Integer.parseInt(userChoice);
-            Chips chip = new Chips();
-            chip.setName(userOrder.chipsList.get(userSidesChoice));
-            userOrder.addChips(chip);
+            if (validateUserChoice(userSidesChoice, userOrder.chipsList)) {
+                Chips chip = new Chips();
+                chip.setName(userOrder.chipsList.get(userSidesChoice));
+                userOrder.addChips(chip);
+            }
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -202,8 +220,10 @@ public class OrderScreen {
             Sides side = new Sides();
             int userSidesChoice = Integer.parseInt(userChoice);
 
-            side.setName(userOrder.sides.get(userSidesChoice));
-            userOrder.addSide(side);
+            if (validateUserChoice(userSidesChoice, userOrder.sides)) {
+                side.setName(userOrder.sides.get(userSidesChoice));
+                userOrder.addSide(side);
+            }
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
                 System.out.println();
@@ -215,5 +235,14 @@ public class OrderScreen {
 
     public Order getUserOrder() {
         return this.userOrder;
+    }
+
+    private boolean validateUserChoice(int userChoice, Map<Integer, String> itemsList) {
+        if (userChoice < 0 || userChoice > itemsList.size()) {
+            System.out.println("That's not a valid choice.");
+            Inputs.awaitInput();
+            return false;
+        }
+        return true;
     }
 }
