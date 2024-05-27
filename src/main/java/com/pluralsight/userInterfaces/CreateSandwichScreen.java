@@ -234,7 +234,6 @@ public class CreateSandwichScreen{
         Utilities.clearConsole();
         System.out.println(Utilities.centerMessage("Choosing Bread Size", 50, '='));
         System.out.print("\n");
-//TODO  Need to fix this ??? idk whats wrong.
         System.out.print("""
                 [1] 4" ($5.50)
                 [2] 8" ($7.00)
@@ -248,6 +247,7 @@ public class CreateSandwichScreen{
             case 3 -> userSandwich.setSize("12\"");
             default -> {
                 System.out.println("That is not a valid choice, please select a valid option...");
+                Inputs.awaitInput();
                 chooseBreadSize(userSandwich);
             }
         }
