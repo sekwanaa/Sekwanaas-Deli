@@ -53,7 +53,7 @@ public class OrderScreen {
                 
                 Enter choice:\s""");
 
-            isChoosingDrinks = processDrinkMenuChoice(isChoosingDrinks);
+            isChoosingDrinks = processDrinkMenuChoice();
         }
     }
 
@@ -141,7 +141,7 @@ public class OrderScreen {
         return true;
     }
 
-    private boolean processDrinkMenuChoice(boolean isChoosingDrinks) {
+    private boolean processDrinkMenuChoice() {
         String userChoice = Inputs.getString();
 
         try {
@@ -184,16 +184,16 @@ public class OrderScreen {
             if (validateUserChoice(drinkTypeChoice, userOrder.drinksList)) {
                 drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
                 userOrder.addDrink(drink);
-                isChoosingDrinks = false;
+                return false;
             }
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
-                isChoosingDrinks = false;
+                return false;
             } else {
                 System.out.println("This is not a valid command, please try again.");
             }
         }
-        return isChoosingDrinks;
+        return true;
     }
 
     private void processChipsMenuChoice() {
@@ -231,10 +231,6 @@ public class OrderScreen {
                 System.out.println("This was not a valid sides choice. Please try again...");
             }
         }
-    }
-
-    public Order getUserOrder() {
-        return this.userOrder;
     }
 
     private boolean validateUserChoice(int userChoice, Map<Integer, String> itemsList) {
