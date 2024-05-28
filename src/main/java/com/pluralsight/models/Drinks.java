@@ -1,6 +1,6 @@
 package com.pluralsight.models;
 
-public class Drinks {
+public class Drinks extends Product {
     private String brand;
     private String size;
     private double price;
@@ -29,5 +29,10 @@ public class Drinks {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", this.size, this.brand);
     }
 }

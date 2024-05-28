@@ -35,7 +35,7 @@ public class CreateSandwichScreen{
             processSandwichHomeScreenMenuChoice();
     }
 
-    public void customSandwichCreationScreen() {
+    public void sandwichEditScreen() {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
@@ -57,31 +57,6 @@ public class CreateSandwichScreen{
                     Enter choice:\s""");
 
             isRunning = processCustomSandwichCreationMenuChoice(userSandwich, isRunning);
-        }
-    }
-
-    public void sandwichEditScreen() {
-        while (true) {
-            Map<Integer, Sandwich> sandwichMap = new HashMap<>();
-            int sandwichNum = 1;
-            for (Sandwich sandwich : userOrder.getSandwiches()) {
-                sandwichMap.put(sandwichNum, sandwich);
-                System.out.println(sandwich.displayCurrentSandwichCompact(sandwichNum));
-                sandwichNum++;
-            }
-
-            System.out.print("\n\nWhich sandwich would you like to edit?\n\nEnter choice: ");
-
-            int sandwichEditChoice = Inputs.getInt();
-
-            if (sandwichEditChoice < 0 || sandwichEditChoice > sandwichMap.size()) {
-                System.out.println("That's not a valid choice.");
-                Inputs.awaitInput();
-            } else {
-                sandwichEditScreen(sandwichMap.get(sandwichEditChoice));
-                userOrder.getSandwiches().remove(sandwichMap.get(sandwichEditChoice));
-                break;
-            }
         }
     }
 
@@ -133,7 +108,7 @@ public class CreateSandwichScreen{
             int userIntChoice = Integer.parseInt(userChoice);
             switch (userIntChoice) {
                 case 1:
-                    customSandwichCreationScreen();
+                    sandwichEditScreen();
                     break;
                 case 2:
                     chooseSignatureSandwichScreen();
@@ -446,15 +421,21 @@ public class CreateSandwichScreen{
     }
 
     private static Set<String> checkIfHasToppings(Sandwich userSandwich, String type) {
-        Set<String> chosenToppings;
-        if (type.equalsIgnoreCase("premium") && !userSandwich.getPremiumToppings().isEmpty()) chosenToppings = userSandwich.getPremiumToppings();
-        else if (type.equalsIgnoreCase("regular") && !userSandwich.getRegularToppings().isEmpty()) chosenToppings = userSandwich.getRegularToppings();
-        else chosenToppings = new HashSet<>();
+        Set<String> chosenToppings = Set.of();
+        if (type.equalsIgnoreCase("premium")) {
+            if (userSandwich.getPremiumToppings() == null) return new HashSet<>();
+            if (!userSandwich.getPremiumToppings().isEmpty()) chosenToppings = userSandwich.getPremiumToppings();
+        }
+        else if (type.equalsIgnoreCase("regular")) {
+            if (userSandwich.getRegularToppings() == null) return new HashSet<>();
+            if (!userSandwich.getRegularToppings().isEmpty()) chosenToppings = userSandwich.getRegularToppings();
+        }
         return chosenToppings;
     }
 
     private Set<String> checkIfHasSauces(Sandwich userSandwich) {
         Set<String> sauces;
+        if (userSandwich.getSauces() == null) return new HashSet<>();
         if (!userSandwich.getSauces().isEmpty()) sauces = userSandwich.getSauces();
         else sauces = new HashSet<>();
         return sauces;

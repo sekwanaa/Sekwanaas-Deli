@@ -4,7 +4,7 @@ import com.pluralsight.Utilities.Utilities;
 
 import java.util.Set;
 
-public class Sandwich {
+public class Sandwich extends Product {
     private String size;
     private String type;
     private Set<String> premiumToppingsList;

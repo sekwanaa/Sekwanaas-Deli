@@ -4,6 +4,8 @@ import com.pluralsight.Utilities.*;
 import com.pluralsight.models.*;
 import com.pluralsight.DataManagers.ReceiptManager;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OrderScreen {
@@ -260,14 +262,16 @@ public class OrderScreen {
 
             switch (userIntChoice) {
                 case 1:
-                    CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
-                    createSandwichScreen.sandwichEditScreen();
+                    selectWhichItemToEdit(userOrder.getSandwiches());
                     break;
                 case 2:
+                    selectWhichItemToEdit(userOrder.getDrinks());
                     break;
                 case 3:
+                    selectWhichItemToEdit(userOrder.getChips());
                     break;
                 case 4:
+                    selectWhichItemToEdit(userOrder.getSidesList());
                     break;
                 default:
                     break;
@@ -280,6 +284,47 @@ public class OrderScreen {
                 Inputs.awaitInput();
             }
         }
+    }
+
+    private void selectWhichItemToEdit(List<? extends Product> itemList) {
+        Utilities.clearConsole();
+        Map<Integer, Product> itemsMap = new HashMap<>();
+        int itemNum = 1;
+        if (!itemList.isEmpty()) {
+            for (Product item : itemList) {
+                itemsMap.put(itemNum, item);
+                if (item instanceof Sandwich) System.out.printf("%s\n", ((Sandwich) item).displayCurrentSandwichCompact(itemNum));
+                else System.out.printf("[%d] %s\n", itemNum, item);
+                itemNum++;
+            }
+
+            System.out.print("\n\nWhich item would you like to edit?\n\nEnter choice: ");
+
+            int itemEditChoice = Inputs.getInt();
+
+            if (itemEditChoice < 0 || itemEditChoice > itemsMap.size()) {
+                System.out.println("That's not a valid choice.");
+                Inputs.awaitInput();
+            } else {
+                Product itemChoice = itemList.get(itemEditChoice - 1);
+
+                if (itemChoice instanceof Drinks) {
+                    orderDrink();
+                    userOrder.getDrinks().remove((Drinks) itemsMap.get(itemEditChoice));
+                } else if (itemChoice instanceof Chips) {
+                    addChips();
+                    userOrder.getChips().remove((Chips) itemsMap.get(itemEditChoice));
+                } else if (itemChoice instanceof Sides) {
+                    orderSides();
+                    userOrder.getSidesList().remove((Sides) itemsMap.get(itemEditChoice));
+                } else if (itemChoice instanceof Sandwich) {
+                    CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
+                    createSandwichScreen.sandwichEditScreen((Sandwich) itemsMap.get(itemEditChoice));
+                    userOrder.getSandwiches().remove((Sandwich) itemsMap.get(itemEditChoice));
+                }
+            }
+        }
+
     }
 
     private boolean validateUserChoice(int userChoice, Map<Integer, String> itemsList) {
