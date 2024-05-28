@@ -60,7 +60,32 @@ public class CreateSandwichScreen{
         }
     }
 
-    public void customSandwichCreationScreen(Sandwich userSandwich) {
+    public void sandwichEditScreen() {
+        while (true) {
+            Map<Integer, Sandwich> sandwichMap = new HashMap<>();
+            int sandwichNum = 1;
+            for (Sandwich sandwich : userOrder.getSandwiches()) {
+                sandwichMap.put(sandwichNum, sandwich);
+                System.out.println(sandwich.displayCurrentSandwichCompact(sandwichNum));
+                sandwichNum++;
+            }
+
+            System.out.print("\n\nWhich sandwich would you like to edit?\n\nEnter choice: ");
+
+            int sandwichEditChoice = Inputs.getInt();
+
+            if (sandwichEditChoice < 0 || sandwichEditChoice > sandwichMap.size()) {
+                System.out.println("That's not a valid choice.");
+                Inputs.awaitInput();
+            } else {
+                sandwichEditScreen(sandwichMap.get(sandwichEditChoice));
+                userOrder.getSandwiches().remove(sandwichMap.get(sandwichEditChoice));
+                break;
+            }
+        }
+    }
+
+    public void sandwichEditScreen(Sandwich userSandwich) {
         boolean isRunning = true;
         while (isRunning) {
             Utilities.clearConsole();
@@ -221,7 +246,7 @@ public class CreateSandwichScreen{
             if (sandwich != null) {
                 System.out.print("Would you like to edit your sandwich? (Y/N): ");
                 String editSandwich = Inputs.getString();
-                if (editSandwich.equalsIgnoreCase("y")) customSandwichCreationScreen(sandwich);
+                if (editSandwich.equalsIgnoreCase("y")) sandwichEditScreen(sandwich);
                 else userOrder.addSandwich(sandwich);
             }
         } catch (NumberFormatException e) {

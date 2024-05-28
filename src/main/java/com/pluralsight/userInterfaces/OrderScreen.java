@@ -29,7 +29,9 @@ public class OrderScreen {
                     [3] Chips
                     [4] Sides
                     
+                    [e] Edit order
                     [f] Finalize order
+                    
                     [x] Cancel order
                     
                     Enter choice:\s""");
@@ -107,6 +109,24 @@ public class OrderScreen {
             }
         } catch (NumberFormatException e) {
             switch (orderMenuChoice) {
+                case "E", "e" -> {
+                    //Ask user what items they would like to edit
+                    Utilities.clearConsole();
+
+                    System.out.print("""
+                    What would you like to edit?
+                    
+                    [1] Sandwich
+                    [2] Drinks
+                    [3] Chips
+                    [4] Sides
+                    
+                    [x] Cancel editing
+                    
+                    Enter choice:\s""");
+
+                    processEditingMenuChoice();
+                }
                 case "F", "f" -> {
                     // add items to receipt and finalize the order
                     Utilities.clearConsole();
@@ -118,7 +138,6 @@ public class OrderScreen {
                         case "Y", "y":
                             ReceiptManager.createReceipt(userOrder.toString());
                             return false;
-//                            HomeScreen.displayHomeScreen();
                         case "N", "n":
                             break;
                         default:
@@ -130,7 +149,6 @@ public class OrderScreen {
                 }
                 case "X", "x" -> {
                     return false;
-//                    HomeScreen.displayHomeScreen();
                 }
                 default -> {
                     System.out.print("This is not a valid choice.");
@@ -229,6 +247,37 @@ public class OrderScreen {
                 System.out.println();
             } else {
                 System.out.println("This was not a valid sides choice. Please try again...");
+                Inputs.awaitInput();
+            }
+        }
+    }
+
+    private void processEditingMenuChoice() {
+        String userChoice = Inputs.getString();
+
+        try {
+            int userIntChoice = Integer.parseInt(userChoice);
+
+            switch (userIntChoice) {
+                case 1:
+                    CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
+                    createSandwichScreen.sandwichEditScreen();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                default:
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            if (userChoice.equalsIgnoreCase("x")) {
+                System.out.println();
+            } else {
+                System.out.println("This was not a valid menu choice. Please try again...");
+                Inputs.awaitInput();
             }
         }
     }

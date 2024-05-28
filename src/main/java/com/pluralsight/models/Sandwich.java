@@ -198,4 +198,41 @@ public class Sandwich {
                 "\n\n" +
                 String.format("Price: $%.2f\n", getPrice());
     }
+
+    public String displayCurrentSandwichCompact(int sandwichNum) {
+        StringBuilder output = new StringBuilder();
+        String isToasted = isToasted() ? "yes" : "no";
+        String hasExtraCheese = hasExtraCheese() ? "yes" : "no";
+        String isExtraMeat = isExtraMeat() ? "yes" : "no";
+        String cheese = getCheese() != null ? getCheese() : "N/A";
+        String sandwichInfo = String.format("Sandwich %d [%s %s]", sandwichNum, getSize(), getType());
+
+        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(String.format("""
+                         Cheese: %s
+                         Toasted: %s | Extra Cheese: %s | Extra Meat: %s
+                        """, cheese, isToasted, hasExtraCheese, isExtraMeat));
+
+        output.append("\n Premium Toppings:\n\t");
+        if (getPremiumToppings() != null) {
+            output.append(getPremiumToppings());
+        } else {
+            output.append("\tN/A\n");
+        }
+
+        output.append("\n Regular Toppings:\n\t");
+        if (getRegularToppings() != null) {
+            output.append(getRegularToppings());
+        } else {
+            output.append("\tN/A\n");
+        }
+
+        output.append("\n Sauces:\n\t");
+        if (getSauces() != null) {
+            output.append(getSauces());
+        } else {
+            output.append("\tN/A\n");
+        }
+        return output.toString();
+    }
 }
