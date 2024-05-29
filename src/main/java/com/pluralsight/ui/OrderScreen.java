@@ -1,5 +1,6 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.models.abstractModel.Product;
 import com.pluralsight.util.*;
 import com.pluralsight.models.*;
 import com.pluralsight.dataManagers.ReceiptManager;

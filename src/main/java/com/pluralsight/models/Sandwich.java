@@ -1,5 +1,6 @@
 package com.pluralsight.models;
 
+import com.pluralsight.models.abstractModel.Product;
 import com.pluralsight.util.Text;
 
 import java.util.Set;
