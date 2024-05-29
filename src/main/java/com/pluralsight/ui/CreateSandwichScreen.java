@@ -1,7 +1,7 @@
-package com.pluralsight.userInterfaces;
+package com.pluralsight.ui;
 
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.util.Inputs;
+import com.pluralsight.util.Text;
 import com.pluralsight.models.BLT;
 import com.pluralsight.models.Order;
 import com.pluralsight.models.PhillyCheeseSteak;
@@ -9,7 +9,7 @@ import com.pluralsight.models.Sandwich;
 
 import java.util.*;
 
-public class CreateSandwichScreen{
+public class CreateSandwichScreen {
     private final Order userOrder;
 
     public CreateSandwichScreen(Order userOrder) {
@@ -21,72 +21,66 @@ public class CreateSandwichScreen{
     //DISPLAYING MENU CHOICES
 
     public void sandwichCreationHomeScreen() {
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage("Choose an option", 45, '-'));
-            System.out.print("""
-                    
-                    [1] Create custom sandwich
-                    [2] Choose a signature sandwich
-                    
-                    [x] Cancel sandwich
-                    
-                    Enter choice:\s""");
+        Text.clearConsole();
+        System.out.println(Text.centerMessage("Choose an option", 45, '-'));
+        System.out.print("""
+                
+                [1] Create custom sandwich
+                [2] Choose a signature sandwich
+                
+                [x] Cancel sandwich
+                
+                Enter choice:\s""");
 
-            processSandwichHomeScreenMenuChoice();
+        processSandwichHomeScreenMenuChoice();
     }
 
     public void sandwichEditScreen() {
         Sandwich userSandwich = new Sandwich();
-        boolean isRunning = true;
-        while (isRunning) {
-            Utilities.clearConsole();
-            System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
-            System.out.println(Utilities.centerMessage("Customize your sandwich", 45, '-'));
-            System.out.print("""
-                    
-                    [1] Choose bread size
-                    [2] Choose bread type
-                    [3] Choose meats (extra charge)
-                    [4] Choose regular toppings
-                    [5] Choose cheese (only 1 cheese allowed)
-                    [6] Choose sauces
-                    
-                    [f] Finalize sandwich
-                    [x] Cancel sandwich
-                    
-                    Enter choice:\s""");
+        Text.clearConsole();
+        System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
+        System.out.println(Text.centerMessage("Customize your sandwich", 45, '-'));
+        System.out.print("""
+                
+                [1] Choose bread size
+                [2] Choose bread type
+                [3] Choose meats (extra charge)
+                [4] Choose regular toppings
+                [5] Choose cheese (only 1 cheese allowed)
+                [6] Choose sauces
+                
+                [f] Finalize sandwich
+                [x] Cancel sandwich
+                
+                Enter choice:\s""");
 
-            isRunning = processCustomSandwichCreationMenuChoice(userSandwich, isRunning);
-        }
+        if (processCustomSandwichCreationMenuChoice(userSandwich)) sandwichEditScreen();
     }
 
     public void sandwichEditScreen(Sandwich userSandwich) {
-        boolean isRunning = true;
-        while (isRunning) {
-            Utilities.clearConsole();
-            System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
-            System.out.println(Utilities.centerMessage("Customize your sandwich", 45, '-'));
-            System.out.print("""
-                    
-                    [1] Choose bread size
-                    [2] Choose bread type
-                    [3] Choose meats (extra charge)
-                    [4] Choose regular toppings
-                    [5] Choose cheese (only 1 cheese allowed)
-                    [6] Choose sauces
-                    
-                    [f] Finalize sandwich
-                    [x] Cancel sandwich
-                    
-                    Enter choice:\s""");
+        Text.clearConsole();
+        System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
+        System.out.println(Text.centerMessage("Customize your sandwich", 45, '-'));
+        System.out.print("""
+                
+                [1] Choose bread size
+                [2] Choose bread type
+                [3] Choose meats (extra charge)
+                [4] Choose regular toppings
+                [5] Choose cheese (only 1 cheese allowed)
+                [6] Choose sauces
+                
+                [f] Finalize sandwich
+                [x] Cancel sandwich
+                
+                Enter choice:\s""");
 
-            isRunning = processCustomSandwichCreationMenuChoice(userSandwich, isRunning);
-        }
+        if (processCustomSandwichCreationMenuChoice(userSandwich)) sandwichEditScreen(userSandwich);
     }
 
     private void chooseSignatureSandwichScreen() {
-            Utilities.clearConsole();
-            System.out.println("""
+        Text.clearConsole();
+        System.out.println("""
                 Which signature sandwich would you like?
                 
                 [1] BLT
@@ -96,7 +90,7 @@ public class CreateSandwichScreen{
                 
                 Enter choice:\s""");
 
-            processSignatureSandwichMenuChoice();
+        processSignatureSandwichMenuChoice();
     }
 
 
@@ -104,135 +98,119 @@ public class CreateSandwichScreen{
     private void processSandwichHomeScreenMenuChoice() {
         String userChoice = Inputs.getString();
 
-        try {
-            int userIntChoice = Integer.parseInt(userChoice);
-            switch (userIntChoice) {
-                case 1:
-                    sandwichEditScreen();
-                    break;
-                case 2:
-                    chooseSignatureSandwichScreen();
-                    break;
-                default:
-                    System.out.println("This is not a valid choice, please try again.");
-                    Inputs.awaitInput();
-                    break;
-            }
-        } catch (NumberFormatException e) {
-            switch (userChoice) {
-                case "X", "x" -> System.out.println();
-                default -> System.out.println("This is not a valid choice, please try again.");
-            }
+        switch (userChoice) {
+            case "1":
+                sandwichEditScreen();
+                break;
+            case "2":
+                chooseSignatureSandwichScreen();
+                break;
+            case "X", "x":
+                break;
+            default:
+                System.out.println("This is not a valid choice, please try again.");
+                Inputs.awaitInput();
+                break;
         }
     }
 
-    private boolean processCustomSandwichCreationMenuChoice(Sandwich userSandwich, boolean isRunning) {
+    private boolean processCustomSandwichCreationMenuChoice(Sandwich userSandwich) {
         String userChoice = Inputs.getString();
 
-        try {
-            int userIntChoice = Integer.parseInt(userChoice);
-            switch (userIntChoice) {
-                case 1:
-                    chooseBreadSize(userSandwich);
-                    break;
-                case 2:
-                    chooseBreadType(userSandwich);
-                    break;
-                case 3:
-                    chooseToppings(userSandwich, "premium");
-                    break;
-                case 4:
-                    chooseToppings(userSandwich, "regular");
-                    break;
-                case 5:
-                    chooseCheese(userSandwich);
-                    break;
-                case 6:
-                    chooseSauces(userSandwich);
-                    break;
-                default:
-                    System.out.println("This is not a valid choice, please try again.");
-                    break;
-            }
-        } catch (NumberFormatException e) {
-            switch (userChoice) {
-                case "F", "f" -> {
-                    // first ask if they want toasted, extra cheese, or extra meat.
-                    if (checkIfRequiredItemsAreChosen(userSandwich)) {
-                        System.out.print("Would you like your sandwich toasted? (Y/N): ");
-                        String toasted = Inputs.getString();
-                        if (toasted.equalsIgnoreCase("y")) {
-                            userSandwich.setToasted(true);
-                        }
-
-                        if (userSandwich.getCheese() != null) {
-                            System.out.print("Would you like to make your sandwich extra cheesy? (Y/N): ");
-                            String extraCheese = Inputs.getString();
-                            if (extraCheese.equalsIgnoreCase("y")) {
-                                userSandwich.setExtraCheese(true);
-                            }
-                        }
-
-                        if (userSandwich.getPremiumToppings() != null) {
-                            System.out.print("Would you like you sandwich to be extra meaty? (Y/N): ");
-                            String extraMeat = Inputs.getString();
-                            if (extraMeat.equalsIgnoreCase("y")) {
-                                userSandwich.setExtraMeat(true);
-                            }
-                        }
-                        userOrder.addSandwich(userSandwich);
-                        isRunning = false;
-                    } else {
-                        System.out.println("Sorry, it seems that you haven't chosen the required items (sandwich size / sandwich type)\nPlease select one of each to finalize your sandwich.");
-                        Inputs.awaitInput();
+        switch (userChoice) {
+            case "1":
+                chooseBreadSize(userSandwich);
+                break;
+            case "2":
+                chooseBreadType(userSandwich);
+                break;
+            case "3":
+                chooseToppings(userSandwich, "premium");
+                break;
+            case "4":
+                chooseToppings(userSandwich, "regular");
+                break;
+            case "5":
+                chooseCheese(userSandwich);
+                break;
+            case "6":
+                chooseSauces(userSandwich);
+                break;
+            case "F", "f":
+                // first ask if they want toasted, extra cheese, or extra meat.
+                if (checkIfRequiredItemsAreChosen(userSandwich)) {
+                    System.out.print("Would you like your sandwich toasted? (Y/N): ");
+                    String toasted = Inputs.getString();
+                    if (toasted.equalsIgnoreCase("y")) {
+                        userSandwich.setToasted(true);
                     }
-                }
-                case "X", "x" -> isRunning = false;
-                default -> System.out.println("This is not a valid choice, please try again.");
 
-            }
+                    if (userSandwich.getCheese() != null) {
+                        System.out.print("Would you like to make your sandwich extra cheesy? (Y/N): ");
+                        String extraCheese = Inputs.getString();
+                        if (extraCheese.equalsIgnoreCase("y")) {
+                            userSandwich.setExtraCheese(true);
+                        }
+                    }
+
+                    if (userSandwich.getPremiumToppings() != null) {
+                        System.out.print("Would you like you sandwich to be extra meaty? (Y/N): ");
+                        String extraMeat = Inputs.getString();
+                        if (extraMeat.equalsIgnoreCase("y")) {
+                            userSandwich.setExtraMeat(true);
+                        }
+                    }
+                    userOrder.addSandwich(userSandwich);
+                    return false;
+                } else {
+                    System.out.println("Sorry, it seems that you haven't chosen the required items (sandwich size / sandwich type)\nPlease select one of each to finalize your sandwich.");
+                    Inputs.awaitInput();
+                }
+                break;
+            case "X", "x":
+                return false;
+            default:
+                System.out.println("This is not a valid choice, please try again.");
+                break;
         }
-        return isRunning;
+        return true;
     }
 
     private void processSignatureSandwichMenuChoice() {
         String userChoice = Inputs.getString();
 
-        try {
-            int userIntChoice = Integer.parseInt(userChoice);
 
-            Sandwich sandwich = null;
+        Sandwich sandwich = null;
 
-            switch (userIntChoice) {
-                case 1:
-                    sandwich = new BLT();
-                    System.out.println(sandwich.displayCurrentSandwich());
-                    break;
-                case 2:
-                    sandwich = new PhillyCheeseSteak();
-                    System.out.println(sandwich.displayCurrentSandwich());
-                    break;
-                default:
-                    System.out.println("That's not a valid choice");
-                    Inputs.awaitInput();
-                    break;
-            }
+        switch (userChoice) {
+            case "1":
+                sandwich = new BLT();
+                System.out.println(sandwich.displayCurrentSandwich());
+                break;
+            case "2":
+                sandwich = new PhillyCheeseSteak();
+                System.out.println(sandwich.displayCurrentSandwich());
+                break;
+            case "X", "x":
+                break;
+            default:
+                System.out.println("That's not a valid choice");
+                Inputs.awaitInput();
+                break;
+        }
 
-            if (sandwich != null) {
-                System.out.print("Would you like to edit your sandwich? (Y/N): ");
-                String editSandwich = Inputs.getString();
-                if (editSandwich.equalsIgnoreCase("y")) sandwichEditScreen(sandwich);
-                else userOrder.addSandwich(sandwich);
-            }
-        } catch (NumberFormatException e) {
-            if (userChoice.equalsIgnoreCase("x")) System.out.println();
+        if (sandwich != null) {
+            System.out.print("Would you like to edit your sandwich? (Y/N): ");
+            String editSandwich = Inputs.getString();
+            if (editSandwich.equalsIgnoreCase("y")) sandwichEditScreen(sandwich);
+            else userOrder.addSandwich(sandwich);
         }
     }
 
 
     private void chooseBreadSize(Sandwich userSandwich) {
-        Utilities.clearConsole();
-        System.out.println(Utilities.centerMessage("Choosing Bread Size", 50, '='));
+        Text.clearConsole();
+        System.out.println(Text.centerMessage("Choosing Bread Size", 50, '='));
         System.out.print("\n");
         System.out.print("""
                 [1] 4" ($5.50)
@@ -255,8 +233,8 @@ public class CreateSandwichScreen{
 
 
     private void chooseBreadType(Sandwich userSandwich) {
-        Utilities.clearConsole();
-        System.out.println(Utilities.centerMessage("Choosing Bread Type", 50, '='));
+        Text.clearConsole();
+        System.out.println(Text.centerMessage("Choosing Bread Type", 50, '='));
         System.out.print("\n");
 
         System.out.print("""
@@ -285,8 +263,8 @@ public class CreateSandwichScreen{
 
         boolean isChoosingToppings = true;
         while (isChoosingToppings) {
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage("Choosing toppings", 50, '='));
+            Text.clearConsole();
+            System.out.println(Text.centerMessage("Choosing toppings", 50, '='));
             System.out.printf("Current Toppings: %s\n\n", !chosenToppings.isEmpty() ? chosenToppings : "N/A");
             System.out.println("Please choose which toppings to add:");
             toppings.forEach((number, topping) -> System.out.printf("[%d] %s\n", number, topping));
@@ -344,8 +322,8 @@ public class CreateSandwichScreen{
         Map<Integer, String> cheeses = userOrder.cheeses;
         boolean isChoosingCheeses = true;
         while (isChoosingCheeses) {
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage("Choosing cheese", 50, '='));
+            Text.clearConsole();
+            System.out.println(Text.centerMessage("Choosing cheese", 50, '='));
             System.out.print("\n");
             cheeses.forEach((number, cheese) -> System.out.printf("[%d] %s\n", number, cheese));
             System.out.println("\n[x] Cancel choosing cheese...\n\n");
@@ -377,8 +355,8 @@ public class CreateSandwichScreen{
         Set<String> chosenSauces = checkIfHasSauces(userSandwich);
         boolean isChoosingSauces = true;
         while (isChoosingSauces) {
-            Utilities.clearConsole();
-            System.out.println(Utilities.centerMessage("Choosing sauces", 50, '='));
+            Text.clearConsole();
+            System.out.println(Text.centerMessage("Choosing sauces", 50, '='));
             System.out.printf("Current Sauces: %s\n\n", !chosenSauces.isEmpty() ? chosenSauces : "N/A");
             System.out.print("\n");
             System.out.println("Please choose which toppings to add:");
@@ -425,8 +403,7 @@ public class CreateSandwichScreen{
         if (type.equalsIgnoreCase("premium")) {
             if (userSandwich.getPremiumToppings() == null) return new HashSet<>();
             if (!userSandwich.getPremiumToppings().isEmpty()) chosenToppings = userSandwich.getPremiumToppings();
-        }
-        else if (type.equalsIgnoreCase("regular")) {
+        } else if (type.equalsIgnoreCase("regular")) {
             if (userSandwich.getRegularToppings() == null) return new HashSet<>();
             if (!userSandwich.getRegularToppings().isEmpty()) chosenToppings = userSandwich.getRegularToppings();
         }

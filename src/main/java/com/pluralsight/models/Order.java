@@ -1,6 +1,6 @@
 package com.pluralsight.models;
 
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.util.Text;
 
 import java.util.*;
 
@@ -125,7 +125,7 @@ public class Order {
         }
 
         if (!this.drinks.isEmpty()) {
-            output.append(Utilities.createHeader("Drinks"));
+            output.append(Text.createHeader("Drinks"));
             String drinkAbbrev = "";
             for (Drinks drink : drinks) {
                 switch (drink.getSize()) {
@@ -139,7 +139,7 @@ public class Order {
         }
 
         if (!this.chips.isEmpty()) {
-            output.append((Utilities.createHeader("Chips")));
+            output.append((Text.createHeader("Chips")));
             for (Chips chips : chips) {
                 double chipsCost = chips.getPrice();
                 subtotal += chipsCost;
@@ -150,7 +150,7 @@ public class Order {
         }
 
         if (!this.sidesList.isEmpty()) {
-            output.append(Utilities.createHeader("Sides"));
+            output.append(Text.createHeader("Sides"));
             sidesList.forEach(side -> output.append(String.format(" %s\n", side.getName())));
         }
 

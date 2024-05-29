@@ -1,8 +1,8 @@
-package com.pluralsight.DataManagers;
+package com.pluralsight.dataManagers;
 
-import com.pluralsight.Constants.AdminPasswords;
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.constants.AdminPasswords;
+import com.pluralsight.util.Inputs;
+import com.pluralsight.util.Text;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -57,7 +57,7 @@ public class ReceiptManager {
     }
 
     private static boolean verifyPassword() {
-        Utilities.clearConsole();
+        Text.clearConsole();
         System.out.print("Enter Password: ");
         String userInput = Inputs.getString();
         return userInput.equals(AdminPasswords.RECEIPT_LOGS.password);

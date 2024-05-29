@@ -1,4 +1,4 @@
-package com.pluralsight.Utilities;
+package com.pluralsight.util;
 
 import java.util.Scanner;
 
@@ -41,17 +41,6 @@ public class Inputs {
             scanner.next(); // Discard invalid input
         }
         int input = scanner.nextInt();
-        scanner.nextLine(); //eat CRLF
-        return input;
-    }
-
-    public static double getDouble() {
-        ensureScannerIsOpen();
-        while (!scanner.hasNextDouble()) {
-            System.out.println("That's not a valid double... Please enter a double:");
-            scanner.next(); // Discard invalid input
-        }
-        double input = scanner.nextDouble();
         scanner.nextLine(); //eat CRLF
         return input;
     }

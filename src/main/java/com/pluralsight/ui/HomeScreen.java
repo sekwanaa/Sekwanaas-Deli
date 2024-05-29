@@ -1,18 +1,16 @@
-package com.pluralsight.userInterfaces;
+package com.pluralsight.ui;
 
-import com.pluralsight.DataManagers.ReceiptManager;
-import com.pluralsight.Utilities.Inputs;
+import com.pluralsight.dataManagers.ReceiptManager;
+import com.pluralsight.util.Inputs;
 
 import java.util.*;
 
 public class HomeScreen {
 
     public static void displayHomeScreen() {
-        boolean usingApplication = true;
-        while (usingApplication) {
-            displayWelcomeMessage();
+        displayWelcomeMessage();
 
-            System.out.print("""
+        System.out.print("""
                 
                 [1] Create a new order
                 [2] View receipts (Admin Only)
@@ -21,8 +19,7 @@ public class HomeScreen {
                 
                 Enter choice:\s""");
 
-            usingApplication = processHomeScreenChoice();
-        }
+        if (processHomeScreenChoice()) displayHomeScreen();
     }
 
     private static void displayWelcomeMessage() {

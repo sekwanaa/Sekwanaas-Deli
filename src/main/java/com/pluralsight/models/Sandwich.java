@@ -1,6 +1,6 @@
 package com.pluralsight.models;
 
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.util.Text;
 
 import java.util.Set;
 
@@ -155,7 +155,7 @@ public class Sandwich extends Product {
         String cheese = getCheese() != null ? getCheese() : "N/A";
         String sandwichInfo = String.format("Sandwich [%s %s]", getSize(), getType());
 
-        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(" ").append(Text.createHeader(sandwichInfo, getPrice()));
         output.append(String.format("""
                          Cheese: %s
                          Toasted: %s | Extra Cheese: %s | Extra Meat: %s
@@ -185,7 +185,7 @@ public class Sandwich extends Product {
     }
 
     public String displayCurrentSandwich() {
-        return Utilities.centerMessage("Your current sandwich", 45, '-') +
+        return Text.centerMessage("Your current sandwich", 45, '-') +
                 "\n\n" +
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +
                 "Meats: " +
@@ -207,7 +207,7 @@ public class Sandwich extends Product {
         String cheese = getCheese() != null ? getCheese() : "N/A";
         String sandwichInfo = String.format("Sandwich %d [%s %s]", sandwichNum, getSize(), getType());
 
-        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(" ").append(Text.createHeader(sandwichInfo, getPrice()));
         output.append(String.format("""
                          Cheese: %s
                          Toasted: %s | Extra Cheese: %s | Extra Meat: %s

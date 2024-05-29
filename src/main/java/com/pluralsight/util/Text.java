@@ -1,8 +1,8 @@
-package com.pluralsight.Utilities;
+package com.pluralsight.util;
 
-public class Utilities {
+public class Text {
 
-    private Utilities() {}
+    private Text() {}
 
     //Text Utilities
     public static String centerMessage(String message, int width, char padChar) {
@@ -18,26 +18,26 @@ public class Utilities {
     public static String createHeader(String header) {
         StringBuilder builder = new StringBuilder();
         builder.append("\n");
-        builder.append(Utilities.createInnerLine()).append("\n");
+        builder.append(Text.createInnerLine()).append("\n");
         builder.append(" ");
         builder.append(header);
         int spaces = 40 - header.length();
         builder.append(" ".repeat(Math.max(0, spaces)));
         builder.append("||\n");
-        builder.append(Utilities.createOuterLine()).append("\n");
+        builder.append(Text.createOuterLine()).append("\n");
         return builder.toString();
     }
 
     public static String createHeader(String header, double price) {
         StringBuilder builder = new StringBuilder();
         builder.append("\n");
-        builder.append(Utilities.createInnerLine()).append("\n");
+        builder.append(Text.createInnerLine()).append("\n");
         builder.append(" ");
         builder.append(header);
         int spaces = 40 - header.length();
         builder.append(" ".repeat(Math.max(0, spaces)));
         builder.append(String.format("|| $%.2f\n", price));
-        builder.append(Utilities.createOuterLine()).append("\n");
+        builder.append(Text.createOuterLine()).append("\n");
         return builder.toString();
     }
 

@@ -1,7 +1,7 @@
 package com.pluralsight;
 
-import com.pluralsight.Utilities.Inputs;
-import com.pluralsight.userInterfaces.HomeScreen;
+import com.pluralsight.util.Inputs;
+import com.pluralsight.ui.HomeScreen;
 
 public class Main {
 
