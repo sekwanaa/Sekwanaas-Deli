@@ -1,6 +1,6 @@
 package com.pluralsight.models;
 
-public class Sides {
+public class Sides extends Product {
     private String name;
 
     //Getters and Setters
@@ -11,5 +11,10 @@ public class Sides {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

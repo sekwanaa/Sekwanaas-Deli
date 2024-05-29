@@ -1,6 +1,6 @@
 package com.pluralsight.models;
 
-public class Chips {
+public class Chips extends Product {
     private String name;
 
 
@@ -16,5 +16,10 @@ public class Chips {
 
     public double getPrice() {
         return 1.50;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

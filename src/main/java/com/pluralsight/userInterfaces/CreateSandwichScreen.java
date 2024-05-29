@@ -35,7 +35,7 @@ public class CreateSandwichScreen{
             processSandwichHomeScreenMenuChoice();
     }
 
-    public void customSandwichCreationScreen() {
+    public void sandwichEditScreen() {
         Sandwich userSandwich = new Sandwich();
         boolean isRunning = true;
         while (isRunning) {
@@ -60,7 +60,7 @@ public class CreateSandwichScreen{
         }
     }
 
-    public void customSandwichCreationScreen(Sandwich userSandwich) {
+    public void sandwichEditScreen(Sandwich userSandwich) {
         boolean isRunning = true;
         while (isRunning) {
             Utilities.clearConsole();
@@ -108,7 +108,7 @@ public class CreateSandwichScreen{
             int userIntChoice = Integer.parseInt(userChoice);
             switch (userIntChoice) {
                 case 1:
-                    customSandwichCreationScreen();
+                    sandwichEditScreen();
                     break;
                 case 2:
                     chooseSignatureSandwichScreen();
@@ -221,7 +221,7 @@ public class CreateSandwichScreen{
             if (sandwich != null) {
                 System.out.print("Would you like to edit your sandwich? (Y/N): ");
                 String editSandwich = Inputs.getString();
-                if (editSandwich.equalsIgnoreCase("y")) customSandwichCreationScreen(sandwich);
+                if (editSandwich.equalsIgnoreCase("y")) sandwichEditScreen(sandwich);
                 else userOrder.addSandwich(sandwich);
             }
         } catch (NumberFormatException e) {
@@ -421,15 +421,21 @@ public class CreateSandwichScreen{
     }
 
     private static Set<String> checkIfHasToppings(Sandwich userSandwich, String type) {
-        Set<String> chosenToppings;
-        if (type.equalsIgnoreCase("premium") && !userSandwich.getPremiumToppings().isEmpty()) chosenToppings = userSandwich.getPremiumToppings();
-        else if (type.equalsIgnoreCase("regular") && !userSandwich.getRegularToppings().isEmpty()) chosenToppings = userSandwich.getRegularToppings();
-        else chosenToppings = new HashSet<>();
+        Set<String> chosenToppings = Set.of();
+        if (type.equalsIgnoreCase("premium")) {
+            if (userSandwich.getPremiumToppings() == null) return new HashSet<>();
+            if (!userSandwich.getPremiumToppings().isEmpty()) chosenToppings = userSandwich.getPremiumToppings();
+        }
+        else if (type.equalsIgnoreCase("regular")) {
+            if (userSandwich.getRegularToppings() == null) return new HashSet<>();
+            if (!userSandwich.getRegularToppings().isEmpty()) chosenToppings = userSandwich.getRegularToppings();
+        }
         return chosenToppings;
     }
 
     private Set<String> checkIfHasSauces(Sandwich userSandwich) {
         Set<String> sauces;
+        if (userSandwich.getSauces() == null) return new HashSet<>();
         if (!userSandwich.getSauces().isEmpty()) sauces = userSandwich.getSauces();
         else sauces = new HashSet<>();
         return sauces;

@@ -8,13 +8,13 @@ public class Order {
     protected final List<Sandwich> sandwiches;
     protected final List<Drinks> drinks;
     protected final List<Chips> chips;
-    protected final Set<Sides> sidesList;
+    protected final List<Sides> sidesList;
 
     public Order() {
         this.sandwiches = new ArrayList<>();
         this.drinks = new ArrayList<>();
         this.chips = new ArrayList<>();
-        this.sidesList = new HashSet<>();
+        this.sidesList = new ArrayList<>();
     }
 
     public final Map<Integer, String> sides = new TreeMap<>(Map.of(
@@ -101,7 +101,7 @@ public class Order {
         return sandwiches;
     }
 
-    public Set<Sides> getSidesList() {
+    public List<Sides> getSidesList() {
         return sidesList;
     }
 
