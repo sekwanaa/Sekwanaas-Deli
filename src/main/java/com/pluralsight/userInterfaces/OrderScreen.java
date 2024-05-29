@@ -287,7 +287,10 @@ public class OrderScreen {
     }
 
     private void selectWhichItemToEdit(List<? extends Product> itemList) {
+        int originalItemListSize = itemList.size();
         Utilities.clearConsole();
+        System.out.println(Utilities.centerMessage(" Choose item to edit ", 50, '='));
+        System.out.println();
         Map<Integer, Product> itemsMap = new HashMap<>();
         int itemNum = 1;
         if (!itemList.isEmpty()) {
@@ -310,7 +313,7 @@ public class OrderScreen {
 
                 if (itemChoice instanceof Drinks) {
                     orderDrink();
-                    userOrder.getDrinks().remove((Drinks) itemsMap.get(itemEditChoice));
+                    if (validateItemEdited(originalItemListSize, itemChoice)) userOrder.getDrinks().remove((Drinks) itemsMap.get(itemEditChoice));
                 } else if (itemChoice instanceof Chips) {
                     addChips();
                     userOrder.getChips().remove((Chips) itemsMap.get(itemEditChoice));
@@ -323,10 +326,32 @@ public class OrderScreen {
                     userOrder.getSandwiches().remove((Sandwich) itemsMap.get(itemEditChoice));
                 }
             }
+        } else {
+            System.out.println("You have nothing to edit...");
+            Inputs.awaitInput();
         }
 
     }
 
+    private boolean validateItemEdited(int originalListSize, Product itemChoice) {
+        List<? extends Product> productList = null;
+        try {
+            if (itemChoice instanceof Drinks) {
+                productList = userOrder.getDrinks();
+            } else if (itemChoice instanceof Chips) {
+                productList = userOrder.getChips();
+            } else if (itemChoice instanceof Sides) {
+                productList = userOrder.getSidesList();
+            } else if (itemChoice instanceof Sandwich) {
+                productList = userOrder.getSandwiches();
+            }
+            assert productList != null;
+            if (productList.size() != originalListSize) return true;
+        } catch (IndexOutOfBoundsException e) {
+            return true;
+        }
+        return false;
+    }
     private boolean validateUserChoice(int userChoice, Map<Integer, String> itemsList) {
         if (userChoice < 0 || userChoice > itemsList.size()) {
             System.out.println("That's not a valid choice.");
