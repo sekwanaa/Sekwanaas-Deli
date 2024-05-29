@@ -1,4 +1,4 @@
-package com.pluralsight.models;
+package com.pluralsight.models.abstractModel;
 
 public abstract class Product {
     @Override

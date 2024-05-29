@@ -1,7 +1,9 @@
 package com.pluralsight.models;
 
-import com.pluralsight.Utilities.Utilities;
+import com.pluralsight.models.abstractModel.Product;
+import com.pluralsight.util.Text;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Sandwich extends Product {
@@ -10,10 +12,30 @@ public class Sandwich extends Product {
     private Set<String> premiumToppingsList;
     private boolean extraMeat = false;
     private Set<String> regularToppingsList;
+    private final Set<String> toppingsToAdd = new HashSet<>();
     private String cheese;
     private boolean extraCheese = false;
     private Set<String> saucesList;
+    private final Set<String> saucesToAdd = new HashSet<>();
     private boolean toasted = false;
+
+    //METHODS
+
+    public void addToppings(String topping) {
+        this.toppingsToAdd.add(topping);
+    }
+
+    public void clearToppingsToAdd() {
+        this.toppingsToAdd.clear();
+    }
+
+    public void addSauces(String sauce) {
+        this.saucesToAdd.add(sauce);
+    }
+
+    public void clearSaucesToAdd() {
+        this.saucesToAdd.clear();
+    }
 
     public double getPrice() {
         double finalPrice = 0;
@@ -105,8 +127,16 @@ public class Sandwich extends Product {
         this.regularToppingsList = regularToppings;
     }
 
+    public Set<String> getToppingsToAdd() {
+        return this.toppingsToAdd;
+    }
+
     public Set<String> getSauces() {
         return saucesList;
+    }
+
+    public Set<String> getSaucesToAdd() {
+        return saucesToAdd;
     }
 
     public void setSauces(Set<String> sauces) {
@@ -155,7 +185,7 @@ public class Sandwich extends Product {
         String cheese = getCheese() != null ? getCheese() : "N/A";
         String sandwichInfo = String.format("Sandwich [%s %s]", getSize(), getType());
 
-        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(" ").append(Text.createHeader(sandwichInfo, getPrice()));
         output.append(String.format("""
                          Cheese: %s
                          Toasted: %s | Extra Cheese: %s | Extra Meat: %s
@@ -185,7 +215,7 @@ public class Sandwich extends Product {
     }
 
     public String displayCurrentSandwich() {
-        return Utilities.centerMessage("Your current sandwich", 45, '-') +
+        return Text.centerMessage("Your current sandwich", 45, '-') +
                 "\n\n" +
                 String.format("Bread Size: %s  |  Bread Type: %s\n", (getSize() == null ? "Required" : getSize()), (getType() == null ? "Required" : getType())) +
                 "Meats: " +
@@ -207,7 +237,7 @@ public class Sandwich extends Product {
         String cheese = getCheese() != null ? getCheese() : "N/A";
         String sandwichInfo = String.format("Sandwich %d [%s %s]", sandwichNum, getSize(), getType());
 
-        output.append(" ").append(Utilities.createHeader(sandwichInfo, getPrice()));
+        output.append(" ").append(Text.createHeader(sandwichInfo, getPrice()));
         output.append(String.format("""
                          Cheese: %s
                          Toasted: %s | Extra Cheese: %s | Extra Meat: %s
@@ -235,4 +265,5 @@ public class Sandwich extends Product {
         }
         return output.toString();
     }
+
 }

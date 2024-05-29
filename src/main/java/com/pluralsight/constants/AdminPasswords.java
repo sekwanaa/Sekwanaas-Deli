@@ -1,4 +1,4 @@
-package com.pluralsight.Constants;
+package com.pluralsight.constants;
 
 public enum AdminPasswords {
     RECEIPT_LOGS("receiptAdmin123!");
