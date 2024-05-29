@@ -16,7 +16,7 @@ public class OrderScreen {
         this.userOrder = new Order();
     }
 
-    //Menus
+    //DISPLAYING MENUS
 
     public void homeScreen() {
         Text.clearConsole();
@@ -78,7 +78,7 @@ public class OrderScreen {
         if (processSidesMenuChoice()) orderSides();
     }
 
-    //Processing Menu Choices
+    //PROCESSING MENU CHOICES
 
     private boolean processOrderMenuChoice() {
         String orderMenuChoice = Inputs.getString();
@@ -196,7 +196,7 @@ public class OrderScreen {
             System.out.print("\nEnter choice: ");
             int drinkTypeChoice = Inputs.getInt();
 
-            if (validateUserChoice(drinkTypeChoice, userOrder.drinksList)) {
+            if (isValidUserChoice(drinkTypeChoice, userOrder.drinksList)) {
                 drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
                 userOrder.addDrink(drink);
                 return false;
@@ -216,7 +216,7 @@ public class OrderScreen {
         String userChoice = Inputs.getString();
         try {
             int userSidesChoice = Integer.parseInt(userChoice);
-            if (validateUserChoice(userSidesChoice, userOrder.chipsList)) {
+            if (isValidUserChoice(userSidesChoice, userOrder.chipsList)) {
                 Chips chip = new Chips();
                 chip.setName(userOrder.chipsList.get(userSidesChoice));
                 userOrder.addChips(chip);
@@ -239,7 +239,7 @@ public class OrderScreen {
             Sides side = new Sides();
             int userSidesChoice = Integer.parseInt(userChoice);
 
-            if (validateUserChoice(userSidesChoice, userOrder.sides)) {
+            if (isValidUserChoice(userSidesChoice, userOrder.sides)) {
                 side.setName(userOrder.sides.get(userSidesChoice));
                 userOrder.addSide(side);
                 return false;
@@ -336,6 +336,8 @@ public class OrderScreen {
 
     }
 
+    //VALIDATION CHECKS
+
     private boolean validateItemEdited(int originalListSize, Product itemChoice) {
         List<? extends Product> productList = null;
         try {
@@ -356,7 +358,7 @@ public class OrderScreen {
         return false;
     }
 
-    private boolean validateUserChoice(int userChoice, Map<Integer, String> itemsList) {
+    private boolean isValidUserChoice(int userChoice, Map<Integer, String> itemsList) {
         if (userChoice < 0 || userChoice > itemsList.size()) {
             System.out.println("That's not a valid choice.");
             Inputs.awaitInput();
