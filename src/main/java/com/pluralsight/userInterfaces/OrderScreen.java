@@ -18,8 +18,6 @@ public class OrderScreen {
     //Menus
 
     public void homeScreen() {
-        boolean currentlyOrdering = true;
-        while (currentlyOrdering) {
             Utilities.clearConsole();
             System.out.println(userOrder);
             System.out.println("\n");
@@ -38,13 +36,10 @@ public class OrderScreen {
                     
                     Enter choice:\s""");
 
-            currentlyOrdering = processOrderMenuChoice();
-        }
+            if (processOrderMenuChoice()) homeScreen();
     }
 
     private void orderDrink() {
-        boolean isChoosingDrinks = true;
-        while (isChoosingDrinks) {
             Utilities.clearConsole();
             System.out.print("""
                 What size fountain drink would you like?
@@ -57,8 +52,7 @@ public class OrderScreen {
                 
                 Enter choice:\s""");
 
-            isChoosingDrinks = processDrinkMenuChoice();
-        }
+            if (processDrinkMenuChoice()) orderDrink();
     }
 
     private void addChips() {
@@ -69,7 +63,7 @@ public class OrderScreen {
         System.out.println("\n[x] Cancel sides choice");
         System.out.print("Enter choice: ");
 
-        processChipsMenuChoice();
+        if (processChipsMenuChoice()) addChips();
     }
 
     private void orderSides() {
@@ -80,7 +74,7 @@ public class OrderScreen {
         System.out.println("\n[x] Cancel sides choice");
         System.out.print("Enter choice: ");
 
-        processSidesMenuChoice();
+        if (processSidesMenuChoice()) orderSides();
     }
 
     //Processing Menu Choices
@@ -211,12 +205,13 @@ public class OrderScreen {
                 return false;
             } else {
                 System.out.println("This is not a valid command, please try again.");
+                Inputs.awaitInput();
             }
         }
         return true;
     }
 
-    private void processChipsMenuChoice() {
+    private boolean processChipsMenuChoice() {
         String userChoice = Inputs.getString();
         try {
             int userSidesChoice = Integer.parseInt(userChoice);
@@ -224,17 +219,20 @@ public class OrderScreen {
                 Chips chip = new Chips();
                 chip.setName(userOrder.chipsList.get(userSidesChoice));
                 userOrder.addChips(chip);
+                return false;
             }
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
-                System.out.println();
+                return false;
             } else {
                 System.out.println("This was not a valid sides choice. Please try again...");
+                Inputs.awaitInput();
             }
         }
+        return true;
     }
 
-    private void processSidesMenuChoice() {
+    private boolean processSidesMenuChoice() {
         String userChoice = Inputs.getString();
         try {
             Sides side = new Sides();
@@ -243,15 +241,17 @@ public class OrderScreen {
             if (validateUserChoice(userSidesChoice, userOrder.sides)) {
                 side.setName(userOrder.sides.get(userSidesChoice));
                 userOrder.addSide(side);
+                return false;
             }
         } catch (NumberFormatException e) {
             if (userChoice.equalsIgnoreCase("x")) {
-                System.out.println();
+                return false;
             } else {
                 System.out.println("This was not a valid sides choice. Please try again...");
                 Inputs.awaitInput();
             }
         }
+        return true;
     }
 
     private void processEditingMenuChoice() {
