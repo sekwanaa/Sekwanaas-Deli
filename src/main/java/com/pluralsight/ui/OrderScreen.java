@@ -60,7 +60,7 @@ public class OrderScreen {
         Text.clearConsole();
         System.out.println(Text.centerMessage("Choosing chips", 50, '='));
         System.out.print("\n");
-        userOrder.chipsList.forEach((number, chip) -> System.out.printf("[%d] %s\n", number, chip));
+        userOrder.chipsList.forEach((number, chip) -> System.out.printf("[%s] %s\n", number, chip));
         System.out.println("\n[x] Cancel sides choice");
         System.out.print("Enter choice: ");
 
@@ -71,7 +71,7 @@ public class OrderScreen {
         Text.clearConsole();
         System.out.println(Text.centerMessage("Choosing sides", 50, '='));
         System.out.print("\n");
-        userOrder.sides.forEach((number, side) -> System.out.printf("[%d] %s\n", number, side));
+        userOrder.sides.forEach((number, side) -> System.out.printf("[%s] %s\n", number, side));
         System.out.println("\n[x] Cancel sides choice");
         System.out.print("Enter choice: ");
 
@@ -83,74 +83,58 @@ public class OrderScreen {
     private boolean processOrderMenuChoice() {
         String orderMenuChoice = Inputs.getString();
 
-        try {
-            int userChoice = Integer.parseInt(orderMenuChoice);
-            switch (userChoice) {
-                case 1:
-                    CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
-                    createSandwichScreen.sandwichCreationHomeScreen();
-                    break;
-                case 2:
-                    orderDrink();
-                    break;
-                case 3:
-                    addChips();
-                    break;
-                case 4:
-                    orderSides();
-                    break;
-                default:
-                    System.out.println("This is not a valid choice");
-                    Inputs.awaitInput();
-                    break;
+        switch (orderMenuChoice) {
+            case "1" -> {
+                CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
+                createSandwichScreen.sandwichCreationHomeScreen();
             }
-        } catch (NumberFormatException e) {
-            switch (orderMenuChoice) {
-                case "E", "e" -> {
-                    //Ask user what items they would like to edit
-                    Text.clearConsole();
+            case "2" -> orderDrink();
+            case "3" -> addChips();
+            case "4" -> orderSides();
+            case "E", "e" -> {
+                //Ask user what items they would like to edit
+                Text.clearConsole();
 
-                    System.out.print("""
-                            What would you like to edit?
-                            
-                            [1] Sandwich
-                            [2] Drinks
-                            [3] Chips
-                            [4] Sides
-                            
-                            [x] Cancel editing
-                            
-                            Enter choice:\s""");
+                System.out.print("""
+                        What would you like to edit?
+                        
+                        [1] Sandwich
+                        [2] Drinks
+                        [3] Chips
+                        [4] Sides
+                        
+                        [x] Cancel editing
+                        
+                        Enter choice:\s""");
 
-                    processEditingMenuChoice();
-                }
-                case "F", "f" -> {
-                    // add items to receipt and finalize the order
-                    Text.clearConsole();
-                    System.out.println(userOrder);
-                    System.out.print("\n\n\n\nIs the order correct? (Y/N): ");
-                    String orderFinished = Inputs.getString();
+                processEditingMenuChoice();
+            }
+            case "F", "f" -> {
+                // add items to receipt and finalize the order
+                Text.clearConsole();
+                System.out.println(userOrder);
+                System.out.print("\n\n\n\nIs the order correct? (Y/N): ");
+                String orderFinished = Inputs.getString();
 
-                    switch (orderFinished) {
-                        case "Y", "y":
-                            ReceiptManager.createReceipt(userOrder.toString());
-                            return false;
-                        case "N", "n":
-                            break;
-                        default:
-                            System.out.println("That's not a valid option.");
-                            Inputs.awaitInput();
-                            break;
-                    }
+                switch (orderFinished) {
+                    case "Y", "y":
+                        ReceiptManager.createReceipt(userOrder.toString());
+                        return false;
+                    case "N", "n":
+                        break;
+                    default:
+                        System.out.println("That's not a valid option.");
+                        Inputs.awaitInput();
+                        break;
+                }
 
-                }
-                case "X", "x" -> {
-                    return false;
-                }
-                default -> {
-                    System.out.print("This is not a valid choice.");
-                    Inputs.awaitInput();
-                }
+            }
+            case "X", "x" -> {
+                return false;
+            }
+            default -> {
+                System.out.println("This is not a valid choice");
+                Inputs.awaitInput();
             }
         }
         return true;
@@ -159,70 +143,67 @@ public class OrderScreen {
     private boolean processDrinkMenuChoice() {
         String userChoice = Inputs.getString();
 
-        try {
-            Drinks drink = new Drinks();
-            int drinkChoice = Integer.parseInt(userChoice);
-            String size = "";
-            double price = 0;
+        Drinks drink = new Drinks();
+        String size;
+        double price;
 
-            if (drinkChoice < 0 || drinkChoice > 3) {
+        switch (userChoice) {
+            case "1" -> {
+                size = "Small";
+                price = 2.00;
+            }
+            case "2" -> {
+                size = "Medium";
+                price = 2.50;
+            }
+            case "3" -> {
+                size = "Large";
+                price = 3.00;
+            }
+            case "X", "x" -> {
+                return false;
+            }
+            default -> {
                 System.out.println("That's not a valid choice.");
                 Inputs.awaitInput();
                 return true;
             }
+        }
 
-            switch (drinkChoice) {
-                case 1 -> {
-                    size = "Small";
-                    price = 2.00;
-                }
-                case 2 -> {
-                    size = "Medium";
-                    price = 2.50;
-                }
-                case 3 -> {
-                    size = "Large";
-                    price = 3.00;
-                }
-            }
-            drink.setSize(size);
-            drink.setPrice(price);
-            Text.clearConsole();
-            System.out.println("""
-                    
-                    What drink would you like?
-                    """);
-            userOrder.drinksList.forEach((num, d) -> System.out.printf("[%d] %s\n", num, d));
-            System.out.print("\nEnter choice: ");
-            int drinkTypeChoice = Inputs.getInt();
+        drink.setSize(size);
+        drink.setPrice(price);
+        Text.clearConsole();
+        System.out.println("""
+                
+                What drink would you like?
+                """);
+        userOrder.drinksList.forEach((num, d) -> System.out.printf("[%s] %s\n", num, d));
+        System.out.print("\n[x] Cancel drink choice\n\nEnter choice: ");
+        String drinkTypeChoice = Inputs.getString();
 
-            if (isValidUserChoice(drinkTypeChoice, userOrder.drinksList)) {
-                drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
-                userOrder.addDrink(drink);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            if (userChoice.equalsIgnoreCase("x")) {
-                return false;
-            } else {
-                System.out.println("This is not a valid command, please try again.");
-                Inputs.awaitInput();
-            }
+        if (userOrder.drinksList.containsKey(drinkTypeChoice)) {
+            drink.setBrand(userOrder.drinksList.get(drinkTypeChoice));
+            userOrder.addDrink(drink);
+            return false;
+        } else if (drinkTypeChoice.equalsIgnoreCase("x")) {
+            System.out.println("Cancelling drink choice...");
+            Inputs.awaitInput();
+        } else {
+            System.out.println("That's not a valid drink choice, please try again...");
+            Inputs.awaitInput();
         }
         return true;
     }
 
     private boolean processChipsMenuChoice() {
         String userChoice = Inputs.getString();
-        try {
-            int userSidesChoice = Integer.parseInt(userChoice);
-            if (isValidUserChoice(userSidesChoice, userOrder.chipsList)) {
-                Chips chip = new Chips();
-                chip.setName(userOrder.chipsList.get(userSidesChoice));
-                userOrder.addChips(chip);
-                return false;
-            }
-        } catch (NumberFormatException e) {
+
+        if (userOrder.chipsList.containsKey(userChoice)) {
+            Chips chip = new Chips();
+            chip.setName(userOrder.chipsList.get(userChoice));
+            userOrder.addChips(chip);
+            return false;
+        } else {
             if (userChoice.equalsIgnoreCase("x")) {
                 return false;
             } else {
@@ -235,16 +216,14 @@ public class OrderScreen {
 
     private boolean processSidesMenuChoice() {
         String userChoice = Inputs.getString();
-        try {
-            Sides side = new Sides();
-            int userSidesChoice = Integer.parseInt(userChoice);
 
-            if (isValidUserChoice(userSidesChoice, userOrder.sides)) {
-                side.setName(userOrder.sides.get(userSidesChoice));
-                userOrder.addSide(side);
-                return false;
-            }
-        } catch (NumberFormatException e) {
+        Sides side = new Sides();
+
+        if (userOrder.sides.containsKey(userChoice)) {
+            side.setName(userOrder.sides.get(userChoice));
+            userOrder.addSide(side);
+            return false;
+        } else {
             if (userChoice.equalsIgnoreCase("x")) {
                 return false;
             } else {
@@ -258,32 +237,25 @@ public class OrderScreen {
     private void processEditingMenuChoice() {
         String userChoice = Inputs.getString();
 
-        try {
-            int userIntChoice = Integer.parseInt(userChoice);
-
-            switch (userIntChoice) {
-                case 1:
-                    selectWhichItemToEdit(userOrder.getSandwiches());
-                    break;
-                case 2:
-                    selectWhichItemToEdit(userOrder.getDrinks());
-                    break;
-                case 3:
-                    selectWhichItemToEdit(userOrder.getChips());
-                    break;
-                case 4:
-                    selectWhichItemToEdit(userOrder.getSidesList());
-                    break;
-                default:
-                    break;
-            }
-        } catch (NumberFormatException e) {
-            if (userChoice.equalsIgnoreCase("x")) {
-                System.out.println();
-            } else {
+        switch (userChoice) {
+            case "1":
+                selectWhichItemToEdit(userOrder.getSandwiches());
+                break;
+            case "2":
+                selectWhichItemToEdit(userOrder.getDrinks());
+                break;
+            case "3":
+                selectWhichItemToEdit(userOrder.getChips());
+                break;
+            case "4":
+                selectWhichItemToEdit(userOrder.getSidesList());
+                break;
+            case "X", "x":
+                break;
+            default:
                 System.out.println("This was not a valid menu choice. Please try again...");
                 Inputs.awaitInput();
-            }
+                break;
         }
     }
 
@@ -358,12 +330,4 @@ public class OrderScreen {
         return false;
     }
 
-    private boolean isValidUserChoice(int userChoice, Map<Integer, String> itemsList) {
-        if (userChoice < 0 || userChoice > itemsList.size()) {
-            System.out.println("That's not a valid choice.");
-            Inputs.awaitInput();
-            return false;
-        }
-        return true;
-    }
 }
