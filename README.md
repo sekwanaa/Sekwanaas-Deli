@@ -27,6 +27,20 @@
 </p>
 
 ## A Look Into the Application
+
+<details>
+
+<summary>
+
+### Project Flow Chart
+  
+</summary>
+
+![Project_FlowChart](https://github.com/sekwanaa/Sekwanaas-Deli/assets/112197395/2a0df560-e7ef-4458-ac2a-35306eadd794)
+
+</details>
+
+
 ### File Directory / Home Screen
 ![image](https://github.com/sekwanaa/Sekwanaas-Deli/assets/112197395/6d22f054-8f61-4e71-a582-f2715d868fc4)
 
