@@ -35,28 +35,6 @@ public class CreateSandwichScreen {
         processSandwichHomeScreenMenuChoice();
     }
 
-    public void sandwichEditScreen() {
-        Sandwich userSandwich = new Sandwich();
-        Text.clearConsole();
-        System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
-        System.out.println(Text.centerMessage("Customize your sandwich", 45, '-'));
-        System.out.print("""
-                
-                [1] Choose bread size
-                [2] Choose bread type
-                [3] Choose meats (extra charge)
-                [4] Choose regular toppings
-                [5] Choose cheese (only 1 cheese allowed)
-                [6] Choose sauces
-                
-                [f] Finalize sandwich
-                [x] Cancel sandwich
-                
-                Enter choice:\s""");
-
-        if (processCustomSandwichCreationMenuChoice(userSandwich)) sandwichEditScreen();
-    }
-
     public void sandwichEditScreen(Sandwich userSandwich) {
         Text.clearConsole();
         System.out.printf("\n%s\n", userSandwich.displayCurrentSandwich());
@@ -101,7 +79,9 @@ public class CreateSandwichScreen {
 
         switch (userChoice) {
             case "1":
-            sandwichEditScreen();
+                Sandwich userSandwich = new Sandwich();
+
+            sandwichEditScreen(userSandwich);
             break;
             case "2":
             chooseSignatureSandwichScreen();
