@@ -84,13 +84,13 @@ public class OrderScreen {
         String orderMenuChoice = Inputs.getString();
 
         switch (orderMenuChoice) {
-            case "1" -> {
+            case "1", "one" -> {
                 CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
                 createSandwichScreen.sandwichCreationHomeScreen();
             }
-            case "2" -> orderDrink();
-            case "3" -> addChips();
-            case "4" -> orderSides();
+            case "2", "two" -> orderDrink();
+            case "3", "three" -> addChips();
+            case "4", "four" -> orderSides();
             case "E", "e" -> {
                 //Ask user what items they would like to edit
                 Text.clearConsole();
@@ -148,15 +148,15 @@ public class OrderScreen {
         double price;
 
         switch (userChoice) {
-            case "1" -> {
+            case "1", "one" -> {
                 size = "Small";
                 price = 2.00;
             }
-            case "2" -> {
+            case "2", "two" -> {
                 size = "Medium";
                 price = 2.50;
             }
-            case "3" -> {
+            case "3", "three" -> {
                 size = "Large";
                 price = 3.00;
             }
@@ -238,16 +238,16 @@ public class OrderScreen {
         String userChoice = Inputs.getString();
 
         switch (userChoice) {
-            case "1":
+            case "1", "one":
                 selectWhichItemToEdit(userOrder.getSandwiches());
                 break;
-            case "2":
+            case "2", "two":
                 selectWhichItemToEdit(userOrder.getDrinks());
                 break;
-            case "3":
+            case "3", "three":
                 selectWhichItemToEdit(userOrder.getChips());
                 break;
-            case "4":
+            case "4", "four":
                 selectWhichItemToEdit(userOrder.getSidesList());
                 break;
             case "X", "x":

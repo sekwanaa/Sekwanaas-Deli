@@ -1,7 +1,7 @@
 package com.pluralsight;
 
-import com.pluralsight.util.Inputs;
 import com.pluralsight.ui.HomeScreen;
+import com.pluralsight.util.Inputs;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,7 +14,6 @@ public class DeliApp {
         Inputs.openScanner();
 
         SpringApplication.run(DeliApp.class, args);
-        
         HomeScreen.displayHomeScreen();
 
         Inputs.closeScanner();
