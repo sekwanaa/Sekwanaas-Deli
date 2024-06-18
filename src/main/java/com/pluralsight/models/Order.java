@@ -6,15 +6,15 @@ import java.util.*;
 
 public class Order {
     protected final List<Sandwich> sandwiches;
-    protected final List<Drinks> drinks;
-    protected final List<Chips> chips;
-    protected final List<Sides> sidesList;
+    protected final List<Drink> drinks;
+    protected final List<Chip> chips;
+    protected final List<Side> sideList;
 
     public Order() {
         this.sandwiches = new ArrayList<>();
         this.drinks = new ArrayList<>();
         this.chips = new ArrayList<>();
-        this.sidesList = new ArrayList<>();
+        this.sideList = new ArrayList<>();
     }
 
     public final Map<String, String> premiumToppings = new TreeMap<>(Map.of(
@@ -84,21 +84,21 @@ public class Order {
         sandwiches.add(sandwich );
     }
 
-    public void addDrink(Drinks drink) {
+    public void addDrink(Drink drink) {
         drinks.add(drink);
     }
 
-    public void addChips(Chips chip) {
+    public void addChips(Chip chip) {
         chips.add(chip);
     }
 
-    public void addSide(Sides side) {
-        sidesList.add(side);
+    public void addSide(Side side) {
+        sideList.add(side);
     }
 
 
     //Getters and Setters
-    public List<Drinks> getDrinks() {
+    public List<Drink> getDrinks() {
         return drinks;
     }
 
@@ -106,11 +106,11 @@ public class Order {
         return sandwiches;
     }
 
-    public List<Sides> getSidesList() {
-        return sidesList;
+    public List<Side> getSidesList() {
+        return sideList;
     }
 
-    public List<Chips> getChips() {
+    public List<Chip> getChips() {
         return chips;
     }
 
@@ -132,7 +132,7 @@ public class Order {
         if (!this.drinks.isEmpty()) {
             output.append(Text.createHeader("Drinks"));
             String drinkAbbrev = "";
-            for (Drinks drink : drinks) {
+            for (Drink drink : drinks) {
                 switch (drink.getSize()) {
                     case "Small" -> drinkAbbrev = "Sm";
                     case "Medium" -> drinkAbbrev = "Md";
@@ -145,18 +145,18 @@ public class Order {
 
         if (!this.chips.isEmpty()) {
             output.append((Text.createHeader("Chips")));
-            for (Chips chips : chips) {
-                double chipsCost = chips.getPrice();
+            for (Chip chip : chips) {
+                double chipsCost = chip.getPrice();
                 subtotal += chipsCost;
                 output.append(String.format("""
                      %-22s%-21s$%.2f
-                    """, chips.getName(), " ", chipsCost));
+                    """, chip.getName(), " ", chipsCost));
             }
         }
 
-        if (!this.sidesList.isEmpty()) {
+        if (!this.sideList.isEmpty()) {
             output.append(Text.createHeader("Sides"));
-            sidesList.forEach(side -> output.append(String.format(" %s\n", side.getName())));
+            sideList.forEach(side -> output.append(String.format(" %s\n", side.getName())));
         }
 
         output.append("\n-----------------------------------------++--------\n");

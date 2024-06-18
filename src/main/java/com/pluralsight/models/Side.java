@@ -2,7 +2,7 @@ package com.pluralsight.models;
 
 import com.pluralsight.models.abstractModel.Product;
 
-public class Sides extends Product {
+public class Side extends Product {
     private String name;
 
     //Getters and Setters

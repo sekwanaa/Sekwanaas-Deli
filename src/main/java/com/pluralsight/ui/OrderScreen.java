@@ -58,7 +58,7 @@ public class OrderScreen {
 
     private void addChips() {
         Text.clearConsole();
-        System.out.println(Text.centerMessage("Choosing chips", 50, '='));
+        System.out.println(Text.centerMessage("Choosing chip", 50, '='));
         System.out.print("\n");
         userOrder.chipsList.forEach((number, chip) -> System.out.printf("[%s] %s\n", number, chip));
         System.out.println("\n[x] Cancel sides choice");
@@ -143,7 +143,7 @@ public class OrderScreen {
     private boolean processDrinkMenuChoice() {
         String userChoice = Inputs.getString();
 
-        Drinks drink = new Drinks();
+        Drink drink = new Drink();
         String size;
         double price;
 
@@ -199,7 +199,7 @@ public class OrderScreen {
         String userChoice = Inputs.getString();
 
         if (userOrder.chipsList.containsKey(userChoice)) {
-            Chips chip = new Chips();
+            Chip chip = new Chip();
             chip.setName(userOrder.chipsList.get(userChoice));
             userOrder.addChips(chip);
             return false;
@@ -217,7 +217,7 @@ public class OrderScreen {
     private boolean processSidesMenuChoice() {
         String userChoice = Inputs.getString();
 
-        Sides side = new Sides();
+        Side side = new Side();
 
         if (userOrder.sides.containsKey(userChoice)) {
             side.setName(userOrder.sides.get(userChoice));
@@ -285,16 +285,16 @@ public class OrderScreen {
             } else {
                 Product itemChoice = itemList.get(itemEditChoice - 1);
 
-                if (itemChoice instanceof Drinks) {
+                if (itemChoice instanceof Drink) {
                     orderDrink();
                     if (validateItemEdited(originalItemListSize, itemChoice))
-                        userOrder.getDrinks().remove((Drinks) itemsMap.get(itemEditChoice));
-                } else if (itemChoice instanceof Chips) {
+                        userOrder.getDrinks().remove((Drink) itemsMap.get(itemEditChoice));
+                } else if (itemChoice instanceof Chip) {
                     addChips();
-                    userOrder.getChips().remove((Chips) itemsMap.get(itemEditChoice));
-                } else if (itemChoice instanceof Sides) {
+                    userOrder.getChips().remove((Chip) itemsMap.get(itemEditChoice));
+                } else if (itemChoice instanceof Side) {
                     orderSides();
-                    userOrder.getSidesList().remove((Sides) itemsMap.get(itemEditChoice));
+                    userOrder.getSidesList().remove((Side) itemsMap.get(itemEditChoice));
                 } else if (itemChoice instanceof Sandwich) {
                     CreateSandwichScreen createSandwichScreen = new CreateSandwichScreen(userOrder);
                     createSandwichScreen.sandwichEditScreen((Sandwich) itemsMap.get(itemEditChoice));
@@ -313,11 +313,11 @@ public class OrderScreen {
     private boolean validateItemEdited(int originalListSize, Product itemChoice) {
         List<? extends Product> productList = null;
         try {
-            if (itemChoice instanceof Drinks) {
+            if (itemChoice instanceof Drink) {
                 productList = userOrder.getDrinks();
-            } else if (itemChoice instanceof Chips) {
+            } else if (itemChoice instanceof Chip) {
                 productList = userOrder.getChips();
-            } else if (itemChoice instanceof Sides) {
+            } else if (itemChoice instanceof Side) {
                 productList = userOrder.getSidesList();
             } else if (itemChoice instanceof Sandwich) {
                 productList = userOrder.getSandwiches();

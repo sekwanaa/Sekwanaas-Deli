@@ -2,7 +2,7 @@ package com.pluralsight.models;
 
 import com.pluralsight.models.abstractModel.Product;
 
-public class Chips extends Product {
+public class Chip extends Product {
     private String name;
 
 
