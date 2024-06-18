@@ -2,7 +2,7 @@ package com.pluralsight.models;
 
 import com.pluralsight.models.abstractModel.Product;
 
-public class Drinks extends Product {
+public class Drink extends Product {
     private String brand;
     private String size;
     private double price;

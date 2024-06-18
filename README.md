@@ -12,7 +12,7 @@
 * Create Orders: Generate new orders by selecting whether users want a Sandwich, Drinks, or Chips..
   * When ordering sandwiches, users can customize their sandwich based on size, bread type, which toppings they want, and the types of cheese or sauces on their sandwich.
   * When ordering drinks, users can choose the size of the drink that they would like and also choose the flavor/brand of the drink.
-  * When ordering chips, users can choose which chips they would like to add.
+  * When ordering chip, users can choose which chip they would like to add.
 * Update Orders: Modify existing orders to reflect changes in customer requests.
 ## Object-Oriented Programming (OOP) Principles
 ### Encapsulation
@@ -81,7 +81,7 @@ The goal of this class is to allow the scanner to be used throughout the entire 
 
 ![image](https://github.com/sekwanaa/Sekwanaas-Deli/assets/112197395/45928752-21ca-4562-9f0e-83495f7d4aa3)
 
-### Adding chips
+### Adding chip
 ![image](https://github.com/sekwanaa/Sekwanaas-Deli/assets/112197395/ef4d64c2-f510-405a-9488-1a164ccbf6e3)
 
 ### Order being printed and saved to receipts folder
